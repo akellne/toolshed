@@ -20,7 +20,7 @@ class Wetter(Plugin):
     NAME    = "Wetter"
     AUTHOR  = "kellner@cs.uni-goettingen.de"
     VERSION = (0, 0, 1)
-    ENABLED = False   
+    ENABLED = True
 
     def __init__(self, ircbot, cache_time=datetime.timedelta(hours=1)):
         Plugin.__init__(self, ircbot, cache_time)
@@ -31,6 +31,9 @@ class Wetter(Plugin):
         
         if msg.startswith("!wetter"):
             #get data from cache
+            
+            self.ircbot.switch_personality(nick="kachelmann")
+            
             reload_data, self.days = self.load_cache()
             if reload_data:
                 #reload the data, if too old
@@ -51,6 +54,8 @@ class Wetter(Plugin):
 
             #finally, send the message with the 
             self.ircbot.privmsg(params[0], message)
+            
+            self.ircbot.reset_personality()
 
 
     def _get_weather(self):

@@ -17,9 +17,9 @@ from plugins import get_plugins
 parser = argparse.ArgumentParser(description='Python-based IRC Bot.', 
          formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--nick', help='nickname of bot', 
-                    default='souschef')
+                    default='trololo')
 parser.add_argument('--realname', help='realname of bot',
-                    default='Jacques Caramel')
+                    default='Eduard Anatoljewitsch Chil')
 parser.add_argument('--channel', help='channel to join',
                     default='#mlsec')
 parser.add_argument('--server', help='name of irc server',
@@ -112,7 +112,16 @@ class IRCBot(IRCClient):
         #quit from server
         self.quit()
         sys.exit(0)
-
+        
+    def switch_personality(self, nick):
+        self.part(self.channel, "")
+        time.sleep(1)
+        self.nick(nick)
+        time.sleep(1)
+        self.join(self.channel)
+        
+    def reset_personality(self):
+        self.switch_personality(self.nickname)
 
 def main():
     log.debug(

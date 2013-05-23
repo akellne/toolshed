@@ -41,6 +41,8 @@ class Mensa(Plugin):
         Plugin.on_privmsg(self, msg, *params)
         
         if msg == "!mensa":
+            self.ircbot.switch_personality("souschef")
+        
             #get data from cache
             reload_data, self.days = self.load_cache()
             if reload_data:
@@ -60,6 +62,8 @@ class Mensa(Plugin):
             
             #finally, send the message with the 
             self.ircbot.privmsg(params[0], message)
+
+            self.ircbot.reset_personality()
 
 
     def _get_dishes(self):
