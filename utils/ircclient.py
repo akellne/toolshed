@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger("ircb")
 
 #delay that is used between messages to avoid flooding
-MESSAGE_DELAY = 0.6
+MESSAGE_DELAY = 1.0
 
 #numeric message code constants
 RPL_WELCOME           = 001
