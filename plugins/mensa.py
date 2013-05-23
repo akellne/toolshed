@@ -140,7 +140,7 @@ class Mensa(Plugin):
             #no information
             return None
 
-        tmp = "Der Chef de Cuisine empfiehlt DAY:\n"
+        tmp = "--- Der Chef de Cuisine empfiehlt DAY ---\n"
         for item in self.days[today]:
             tmp += "%s\n" % item["type"]
             if item["starter"]:
