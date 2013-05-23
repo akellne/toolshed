@@ -1,0 +1,9 @@
+*.pyc
+*.DS_Store
+*.bak
+*.db
+*.old
+*.dat
+*.swp
+env/*
+cache/*
