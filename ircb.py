@@ -17,9 +17,9 @@ from plugins import get_plugins
 parser = argparse.ArgumentParser(description='Python-based IRC Bot.', 
          formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--nick', help='nickname of bot', 
-                    default='trololo')
+                    default='toolshed')
 parser.add_argument('--realname', help='realname of bot',
-                    default='Eduard Anatoljewitsch Chil')
+                    default='Stan Marsh')
 parser.add_argument('--channel', help='channel to join',
                     default='#mlsec')
 parser.add_argument('--server', help='name of irc server',
