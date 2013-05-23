@@ -16,13 +16,15 @@ from plugins import get_plugins
 # command line arguments and default values
 parser = argparse.ArgumentParser(description='Python-based IRC Bot.', 
          formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--nick', nargs = 1, help='nickname of bot', 
+parser.add_argument('--nick', help='nickname of bot', 
                     default='souschef')
-parser.add_argument('--channel', nargs = 1, help='channel to join',
+parser.add_argument('--realname', help='realname of bot',
+                    default='Jacques Caramel')
+parser.add_argument('--channel', help='channel to join',
                     default='#mlsec')
-parser.add_argument('--server', nargs = 1, help='name of irc server',
+parser.add_argument('--server', help='name of irc server',
                     default='irc.servercentral.net')
-parser.add_argument('--port', nargs = 1, help='port of irc server',
+parser.add_argument('--port', help='port of irc server',
                     type=int, default=6667)
 
 args = parser.parse_args()
@@ -69,7 +71,7 @@ class IRCBot(IRCClient):
         
         #set nickname, user and join the channel
         self.nick(self.nickname)
-        self.user(self.nickname, "hostname", "servername", "Real Name")
+        self.user(self.nickname, "hostname", "servername", ":" + args.realname)
         self.join(self.channel)
         
         #random greeting
