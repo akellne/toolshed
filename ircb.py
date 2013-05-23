@@ -8,9 +8,24 @@ import time
 import logging
 import random
 import signal
+import argparse
 
 from utils.ircclient import IRCClient
 from plugins import get_plugins
+
+# command line arguments and default values
+parser = argparse.ArgumentParser(description='Python-based IRC Bot.', 
+         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--nick', nargs = 1, help='nickname of bot', 
+                    default='souschef')
+parser.add_argument('--channel', nargs = 1, help='channel to join',
+                    default='#mlsec')
+parser.add_argument('--server', nargs = 1, help='name of irc server',
+                    default='irc.servercentral.net')
+parser.add_argument('--port', nargs = 1, help='port of irc server',
+                    type=int, default=6667)
+
+args = parser.parse_args()
 
 #name and version of the bot
 NAME = "ircb"
@@ -19,16 +34,6 @@ VERSION = (0, 0, 2)
 #setup logger for the ircbot
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger("IRCBot")
-
-#the irc server and port
-SERVER = "irc.servercentral.net"
-PORT   = 6667
-
-#the channel that is joined by the bot
-CHANNEL = "#mlsec"
-
-#the nick that is used for the bot
-NICK    = "souschef"
 
 #greetings that are randomly chosen
 GREETINGS = [
@@ -114,7 +119,7 @@ def main():
         )
     )
     #create the irc bot
-    ircb = IRCBot(SERVER, PORT, NICK, CHANNEL)
+    ircb = IRCBot(args.server, args.port, args.nick, args.channel)
     
     #add signal handler that is called on killing the process
     #=> shutdown the bot nicely
