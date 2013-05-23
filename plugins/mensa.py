@@ -54,9 +54,9 @@ class Mensa(Plugin):
                 if not message:
                     message = "Die Küche hat geschlossen."
                 else:
-                    message = "Ausblick auf morgen:\n" + message
+                    message = message.replace("DAY", "morgen")
             else:
-                message = "Heute:\n" + message
+                message = message.replace("DAY", "heute")
             
             #finally, send the message with the 
             self.ircbot.privmsg(params[0], message)
@@ -127,7 +127,8 @@ class Mensa(Plugin):
         today = today.strftime("%Y%m%d")
         
         if today not in self.days:
-            return "There is no mensa plan for today :-("
+            #no mensa plan vailable
+            return None 
         
         print today, self.days[today]
         
@@ -135,7 +136,7 @@ class Mensa(Plugin):
             #no information
             return None
 
-        tmp = "--- Der Chef de cuisine empfiehlt ---\n"
+        tmp = "Der Chef de Cuisine empfiehlt DAY:\n"
         for item in self.days[today]:
             tmp += "%s\n" % item["type"]
             if item["starter"]:
