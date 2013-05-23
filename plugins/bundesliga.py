@@ -28,14 +28,9 @@ class Bundesliga(Plugin):
         Plugin.on_privmsg(self, msg, *params)
         
         if msg.startswith("!bundesliga"):
-            self.ircbot.switch_personality(nick="derkaiser")
-
-            if msg == "!bundesliga":
-                message = self.get_bundesliga()
-
-            #finally, send the message with the 
+            self.ircbot.switch_personality(nick="loddar")
+            message = self.get_bundesliga()
             self.ircbot.privmsg(params[0], message)
-            
             self.ircbot.reset_personality()
 
     def get_bundesliga(self):
@@ -44,7 +39,7 @@ class Bundesliga(Plugin):
         """
         root = lxml.html.parse(URL)
         el = root.xpath('//table[@class="Spiele"]')[0]
-        tmp = "%s\n" % el.get('summary')
+        tmp = "--- %s ---\n" % el.get('summary').strip()
         for tr in el.getchildren()[1:]:
             td = tr.getchildren()
             tmp += "  %s  %s : %s  %s\n" % (
@@ -53,4 +48,4 @@ class Bundesliga(Plugin):
                 td[3].xpath("string()"),             
                 td[4].xpath("string()")[:-7]
             )  
-        return tmp.encode("utf-8")
+        return tmp.strip().encode("utf-8")

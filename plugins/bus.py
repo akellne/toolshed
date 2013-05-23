@@ -30,13 +30,10 @@ class Bus(Plugin):
         if msg.startswith("!bus"):
             self.ircbot.switch_personality(nick="busfahrer")
 
-            if msg == "!bus":
-                message = "--- Gleich an der Goldschmidtstrasse ---\n"
-                message += self.get_bus()
-
-            #finally, send the message with the 
-            self.ircbot.privmsg(params[0], message)
+            message = "--- Gleich an der Goldschmidtstrasse ---\n"
+            message += self.get_bus()
             
+            self.ircbot.privmsg(params[0], message)
             self.ircbot.reset_personality()
 
     def get_bus(self):
@@ -57,7 +54,7 @@ class Bus(Plugin):
             tmp += " %-12s %-15s %s\n " % (
                 td[0].text.strip(),
                 td[1].text.strip(),
-                td[2].text.strip()
+                td[2].text.strip()[:7]
             )
-        return tmp.encode("utf-8")
+        return tmp.strip().encode("utf-8")
 
