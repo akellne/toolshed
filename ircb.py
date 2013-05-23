@@ -39,15 +39,19 @@ log = logging.getLogger("IRCBot")
 
 #greetings that are randomly chosen
 GREETINGS = [
-    "Bonjour.", "Salut."
+    "Bonjour.", "Salut.", "Hallo.", "Konnichiwa!", "Moin.", 
+    "Hej!", "°Hola!", "°Buenos dÌas!", "Buon giorno!",  
+    "Hyv‰‰ p‰iv‰‰!", "Hoi!", "Goedendag!", "Selam!", "Iyi g¸nler!",
+    "Bon dia!"
 ]
 
 #farewells that are randomly chosen
 FAREWELLS = [
     "Au revoir.", "Salut.", "√Ä bient√¥t.", "√Ä plus tard.",
-    "√Ä la prochaine.", "Bonne journ√©e!"
+    "√Ä la prochaine.", "Bonne journ√©e!", "Sayounara!", "Ciao.",
+    "°Hasta luego!", "°AdiÛs!", "Arrivederci!", "Alla prossima!",
+    "N‰kemiin!", "N‰hd‰‰n pian!", "Eyvallah!", "A reveure!"
 ]
-
 
 class IRCBot(IRCClient):
     """
