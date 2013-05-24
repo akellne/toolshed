@@ -180,7 +180,7 @@ def main():
         type=int, default=6667
     )
     parser.add_argument(
-        '--commands', help='irc commands separated by ,',
+        '--commands', help='irc commands separated by , (note: use \!)',
         default=""
     )
 
