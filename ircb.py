@@ -10,13 +10,13 @@ import random
 import signal
 import argparse
 
-from utils.ircclient import IRCClient
+from utils.ircclient import IRCClient, ERR_NICKNAMEINUSE
 from plugins import get_plugins
 
 # command line arguments and default values
-parser = argparse.ArgumentParser(description='Python-based IRC Bot.', 
+parser = argparse.ArgumentParser(description='Python-based IRC Bot.',
          formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--nick', help='nickname of bot', 
+parser.add_argument('--nick', help='nickname of bot',
                     default='toolshed')
 parser.add_argument('--realname', help='realname of bot',
                     default='Stan Marsh')
@@ -39,8 +39,8 @@ log = logging.getLogger("IRCBot")
 
 #greetings that are randomly chosen
 GREETINGS = [
-    "Bonjour.", "Salut.", "Hallo.", "Konnichiwa!", "Moin.", 
-    "Hej!", "¡Hola!", "¡Buenos días!", "Buon giorno!",  
+    "Bonjour.", "Salut.", "Hallo.", "Konnichiwa!", "Moin.",
+    "Hej!", "¡Hola!", "¡Buenos días!", "Buon giorno!",
     "Hyvää päivää!", "Hoi!", "Goedendag!", "Selam!", "Iyi günler!",
     "Bon dia!"
 ]
@@ -59,10 +59,10 @@ class IRCBot(IRCClient):
     """
     def __init__(self, server, port, nick, channel):
         IRCClient.__init__(self, server, port)
-        
+
         self.nickname = nick
         self.channel  = channel
-        
+
         #get all enabled plugins
         self.plugins = []
         for plugin in get_plugins():
@@ -72,12 +72,12 @@ class IRCBot(IRCClient):
                 self.plugins[-1].on_init()
             else:
                 log.debug("Skipping disabled plugin '%s'..." % plugin)
-        
+
         #set nickname, user and join the channel
         self.nick(self.nickname)
         self.user(self.nickname, "hostname", "servername", ":" + args.realname)
         self.join(self.channel)
-        
+
         #random greeting
         self.privmsg(self.channel, random.choice(GREETINGS))
 
@@ -88,19 +88,30 @@ class IRCBot(IRCClient):
         """
         IRCClient.handle_message(self, prefix, tail, cmd, *args)
 
+        #handle incoming messages
+        if cmd == ERR_NICKNAMEINUSE:
+            #nick name in use => add underscore
+            self.nickname += "_"
+            log.debug(
+                "Nickname already in use. Now " \
+                "trying '%s'" % self.nickname
+            )
+            self.nick(self.nickname)
+
+        #delegate incoming message to plugin
         for plugin in self.plugins:
             #when a message is received delegate it to the plugins
             try:
                 if cmd == "PRIVMSG":
                     plugin.on_privmsg(tail, *args)
-                    
+
             except Exception, e:
                 log.exception("Could not handle message: %s" % e)
 
 
     def shutdown(self):
         """
-        shutdown the bot, i.e. send farewell message, 
+        shutdown the bot, i.e. send farewell message,
         quit the connection the irc server and exit the bot
         """
         for plugin in self.plugins:
@@ -116,12 +127,12 @@ class IRCBot(IRCClient):
         #quit from server
         self.quit()
         sys.exit(0)
-        
+
     def switch_personality(self, nick):
         #self.part(self.channel, "")
         self.nick(nick)
         #self.join(self.channel)
-        
+
     def reset_personality(self):
         self.switch_personality(self.nickname)
 
@@ -133,11 +144,11 @@ def main():
     )
     #create the irc bot
     ircb = IRCBot(args.server, args.port, args.nick, args.channel)
-    
+
     #add signal handler that is called on killing the process
     #=> shutdown the bot nicely
     signal.signal(signal.SIGTERM, lambda signal, frame: ircb.shutdown())
-    
+
     try:
         asyncore.loop()
     except KeyboardInterrupt:
