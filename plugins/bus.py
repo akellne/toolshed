@@ -46,9 +46,9 @@ class Bus(Plugin):
             tmp = ""
             for tr in el:
                 td = tr.getchildren()
-                tmp += " %-12s %-15s %s\n " % (
+                tmp += " %-12s %-20s  %s\n " % (
                     td[0].text.strip(),
-                    td[1].text.strip(),
+                    td[1].text.strip()[:20],
                     td[2].text.strip()[:7]
                 )
         except:
