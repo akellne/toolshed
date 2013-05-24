@@ -314,8 +314,11 @@ class IRCClient(asynchat.async_chat):
     """
     IRC client class
     """
-    def __init__(self, server, port):
+    def __init__(self, server, port, no_message_logging=[]):
         self.received_data = []
+
+        #list of codes that are not logged in handle_message
+        self.no_message_logging = no_message_logging
 
         asynchat.async_chat.__init__(self)
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -357,11 +360,12 @@ class IRCClient(asynchat.async_chat):
         handle incoming irc messages
         => override this to add reaction to messages
         """
-        log.debug(
-            "<<< prefix: %s  tail: %s  cmd: %s  params: %s" % (
-                prefix, tail, cmd, ", ".join(args)
+        if cmd not in self. no_message_logging:
+            log.debug(
+                "<<< prefix: %s  tail: %s  cmd: %s  params: %s" % (
+                    prefix, tail, cmd, ", ".join(args)
+                )
             )
-        )
 
         if cmd == "PING":
             #answer ping with pong
