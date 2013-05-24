@@ -153,7 +153,7 @@ class IRCBot(IRCClient):
         MOTD message
         """
         self.shutdown_trigger_once = shutdown_trigger_once
-        self.trigger_once_commands = cmds.split(";")
+        self.trigger_once_commands = cmds.split(",")
 
 
 def main():
@@ -179,6 +179,10 @@ def main():
         '--port', help='port of irc server',
         type=int, default=6667
     )
+    parser.add_argument(
+        '--commands', help='irc commands separated by ,',
+        default=""
+    )
 
     #parse command line arguments
     args = parser.parse_args()
@@ -200,7 +204,9 @@ def main():
     #=> shutdown the bot nicely
     signal.signal(signal.SIGTERM, lambda signal, frame: ircb.shutdown())
 
-    ircb.trigger_once("!bus")
+    if args.commands:
+        print args.commands
+        ircb.trigger_once(args.commands)
 
     try:
         asyncore.loop()
