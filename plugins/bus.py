@@ -13,9 +13,7 @@ from base import Plugin
 URL = "http://www.fahrplaner.de/hafas/stboard.exe/dn?input=1190951&maxJourneys=5&showResultPopup=popup&start=1"
 
 class Bus(Plugin):
-    """
-    class to parse the bus data of fahrplaner.de webpage
-    """
+    """ class to parse bus data from fahrplaner.de """
     NAME    = "Bus"
     AUTHOR  = "konrad.rieck@uni-goettingen.de"
     VERSION = (0, 0, 1)
@@ -37,24 +35,24 @@ class Bus(Plugin):
             self.ircbot.reset_personality()
 
     def get_bus(self):
-        """
-        load bus data from the fahrplaner.de webpage
-        """
-        #load url and parse it with html parser
+        """ load departures from the fahrplaner.de """
+        
         root = lxml.html.parse(URL)
-
-        #get relevant part
         el = root.find(
             "body/div/table"
         )
-
-        tmp = ""
-        for tr in el:
-            td = tr.getchildren()
-            tmp += " %-12s %-15s %s\n " % (
-                td[0].text.strip(),
-                td[1].text.strip(),
-                td[2].text.strip()[:7]
-            )
-        return tmp.strip().encode("utf-8")
+        
+        try:
+            tmp = ""
+            for tr in el:
+                td = tr.getchildren()
+                tmp += " %-12s %-15s %s\n " % (
+                    td[0].text.strip(),
+                    td[1].text.strip(),
+                    td[2].text.strip()[:7]
+                )
+        except:
+            tmp = "Keine Ahnung. Mein Parser ist kaputt!"
+        finally:
+            return tmp.strip().encode("utf-8")
 
