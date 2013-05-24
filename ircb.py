@@ -21,7 +21,7 @@ parser.add_argument('--nick', help='nickname of bot',
 parser.add_argument('--realname', help='realname of bot',
                     default='Stan Marsh')
 parser.add_argument('--channel', help='channel to join',
-                    default='#mlsec')
+                    default='#frickel')
 parser.add_argument('--server', help='name of irc server',
                     default='irc.servercentral.net')
 parser.add_argument('--port', help='port of irc server',
@@ -119,9 +119,7 @@ class IRCBot(IRCClient):
         
     def switch_personality(self, nick):
         #self.part(self.channel, "")
-        #time.sleep(1)
         self.nick(nick)
-        #time.sleep(1)
         #self.join(self.channel)
         
     def reset_personality(self):
