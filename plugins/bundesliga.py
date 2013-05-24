@@ -33,10 +33,11 @@ class Bundesliga(Plugin):
 
     def get_bundesliga(self):
         """ load results from sport.de """
-        root = lxml.html.parse(URL)
-        el = root.xpath('//table[@class="Spiele"]')[0]
-        
+
         try:
+            root = lxml.html.parse(URL)
+            el = root.xpath('//table[@class="Spiele"]')[0]
+        
             tmp = "--- %s ---\n" % el.get('summary').strip()
             for tr in el.getchildren()[1:]:
                 td = tr.getchildren()

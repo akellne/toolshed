@@ -37,12 +37,12 @@ class Bus(Plugin):
     def get_bus(self):
         """ load departures from the fahrplaner.de """
         
-        root = lxml.html.parse(URL)
-        el = root.find(
-            "body/div/table"
-        )
-        
         try:
+            root = lxml.html.parse(URL)
+            el = root.find(
+                "body/div/table"
+            )
+
             tmp = ""
             for tr in el:
                 td = tr.getchildren()
