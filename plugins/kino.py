@@ -33,12 +33,11 @@ class Kino(Plugin):
 
     def get_kino(self):
         """ load results from kino.de """
-        
         try:
             root = lxml.html.parse(URL)
-            ul = root.xpath('//ul[@class="cinema-city-list"]')[0]
+            tmp = "--- Heute im Kino ---\n"
 
-            tmp = "--- Heute im Kino in Göttingen ---\n"
+            ul = root.xpath('//ul[@class="cinema-city-list"]')[0]
             for li in ul.getchildren():  
                 name = li.find('div/div/a').xpath('string()')
                 tmp += "%s\n" % name.strip()
@@ -58,11 +57,11 @@ class Kino(Plugin):
                     if title not in schedule:
                         schedule[title] = []
                     schedule[title].extend(show)
-                    schedule[title].sort()
 
-                for (k,v) in schedule.items():
-                    if len(k) > 20: k = k[:20] + "..."
-                    tmp += "  %-23s  %s\n" % (k[:23], ' '.join(v))
+                for title in sorted(schedule.keys()):
+                    times = ' '.join(sorted(schedule[title]))
+                    if len(title) > 22: title = title[:22] + "..."
+                    tmp += "  %-25s  %s\n" % (title[:25], times)
         except:
             tmp = "Keine Ahnung. Mein Parser ist kaputt!"
         finally:    
