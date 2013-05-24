@@ -13,9 +13,7 @@ from base import Plugin
 URL = "http://fussballdaten.sport.de/"
 
 class Bundesliga(Plugin):
-    """
-    class to parse bundesliga data 
-    """
+    """ class to parse bundesliga data """
     NAME    = "Bundesliga"
     AUTHOR  = "konrad.rieck@uni-goettingen.de"
     VERSION = (0, 0, 1)
@@ -34,18 +32,21 @@ class Bundesliga(Plugin):
             self.ircbot.reset_personality()
 
     def get_bundesliga(self):
-        """
-        load spieltag from bundesliga data
-        """
+        """ load results from sport.de """
         root = lxml.html.parse(URL)
         el = root.xpath('//table[@class="Spiele"]')[0]
-        tmp = "--- %s ---\n" % el.get('summary').strip()
-        for tr in el.getchildren()[1:]:
-            td = tr.getchildren()
-            tmp += "  %s  %s : %s  %s\n" % (
-                td[0].xpath("string()")[3:-11], 
-                td[1].xpath("string()"),             
-                td[3].xpath("string()"),             
-                td[4].xpath("string()")[:-7]
-            )  
-        return tmp.strip().encode("utf-8")
+        
+        try:
+            tmp = "--- %s ---\n" % el.get('summary').strip()
+            for tr in el.getchildren()[1:]:
+                td = tr.getchildren()
+                tmp += "  %s  %s : %s  %s\n" % (
+                    td[0].xpath("string()")[3:-11], 
+                    td[1].xpath("string()"),             
+                    td[3].xpath("string()"),             
+                    td[4].xpath("string()")[:-7]
+                )  
+        except:
+            tmp = "Keine Ahnung. Mein Parser ist kaputt!"
+        finally:
+            return tmp.strip().encode("utf-8")            

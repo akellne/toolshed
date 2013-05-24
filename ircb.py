@@ -139,9 +139,7 @@ class IRCBot(IRCClient):
 
     def switch_personality(self, nick):
         #self.part(self.channel, "")
-        #time.sleep(1)
         self.nick(nick)
-        #time.sleep(1)
         #self.join(self.channel)
 
 
