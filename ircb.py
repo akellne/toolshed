@@ -169,7 +169,7 @@ def main():
         '--realname', help='realname of bot', default='Stan Marsh'
     )
     parser.add_argument(
-        '--channel', help='channel to join', default='#mlsec'
+        '--channel', help='channel to join', default='#goesec'
     )
     parser.add_argument(
         '--server', help='name of irc server',
