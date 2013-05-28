@@ -24,6 +24,7 @@ class IfINews(Plugin):
     AUTHOR  = "kellner@cs.uni-goettingen.de"
     VERSION = (0, 0, 1)
     ENABLED = True
+    HELP    = "!ifi  shows the cureent ifi news"
 
     def __init__(self, ircbot, cache_time=datetime.timedelta(hours=1)):
         Plugin.__init__(self, ircbot, cache_time)
