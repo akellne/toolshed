@@ -22,6 +22,7 @@ class FastFood(Plugin):
     AUTHOR  = "kellner@cs.uni-goettingen.de"
     VERSION = (0, 0, 1)
     ENABLED = True
+    HELP    = "!fastfood  display the king of the month"
 
     def __init__(self, ircbot, cache_time=datetime.timedelta(days=1)):
         Plugin.__init__(self, ircbot, cache_time)

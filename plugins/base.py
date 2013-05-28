@@ -24,6 +24,7 @@ class Plugin(object):
     AUTHOR  = ""
     VERSION = (0, 0, 0)
     ENABLED = False
+    HELP    = ""
 
     def __init__(self, ircbot, cache_time=None):
         #setup plugin logger

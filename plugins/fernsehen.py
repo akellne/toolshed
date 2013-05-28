@@ -9,7 +9,7 @@ import json
 
 from base import Plugin
 
-#URL to the tvmovie data 
+#URL to the tvmovie data
 URL = "http://mobil.tvmovie.de/page%d.rbml"
 
 class Fernsehen(Plugin):
@@ -18,16 +18,22 @@ class Fernsehen(Plugin):
     AUTHOR  = "konrad.rieck@uni-goettingen.de"
     VERSION = (0, 0, 1)
     ENABLED = True
+    HELP    = "!fernsehen  current tv shows\n" \
+              "!fernsehen+20:15  tv shows at 20:15\n" \
+              "!fernsehen+22:00  tv shows at 22:00\n" \
+              "!fernsehen+tipp  today's best tv shows\n" \
+              "!fernsehen+filme  today's best movies" \
+
 
     def __init__(self, ircbot, cache_time=datetime.timedelta(hours=1)):
         Plugin.__init__(self, ircbot, cache_time)
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
-        
+
         if msg.startswith("!fernsehen"):
             self.ircbot.switch_personality(nick="glotze")
-            
+
             if msg == "!fernsehen+gleich":
                 message = self.get_fernsehen(6)
             elif msg == "!fernsehen+20:15":
@@ -35,9 +41,9 @@ class Fernsehen(Plugin):
             elif msg == "!fernsehen+22:00":
                 message = self.get_fernsehen(2)
             elif msg == "!fernsehen+tipp":
-                message = self.get_fernsehen(5)                
+                message = self.get_fernsehen(5)
             elif msg == "!fernsehen+filme":
-                message = self.get_fernsehen(4)                
+                message = self.get_fernsehen(4)
             else:
                 message = self.get_fernsehen(3)
 
@@ -47,7 +53,7 @@ class Fernsehen(Plugin):
     def get_fernsehen(self, page):
         """ load results from tvmovie.de """
 
-        try: 
+        try:
             tmp = ""
             root = lxml.html.parse(URL % page)
             el = root.xpath('//a[@class="piped-active"]')[0]

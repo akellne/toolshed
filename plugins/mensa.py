@@ -21,7 +21,8 @@ class Mensa(Plugin):
     NAME    = "Mensa Plan"
     AUTHOR  = "kellner@cs.uni-goettingen.de"
     VERSION = (0, 0, 1)
-    ENABLED = True    
+    ENABLED = True
+    HELP    = "!mensa  today's dishes in the nord mensa"
 
     def __init__(self, ircbot, cache_time=datetime.timedelta(days=1)):
         Plugin.__init__(self, ircbot, cache_time)
@@ -39,10 +40,10 @@ class Mensa(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
-        
+
         if msg == "!mensa":
             self.ircbot.switch_personality("souschef")
-        
+
             #get data from cache
             reload_data, self.days = self.load_cache()
             if reload_data:
@@ -59,8 +60,8 @@ class Mensa(Plugin):
                     message = message.replace("DAY", "morgen")
             else:
                 message = message.replace("DAY", "heute")
-            
-            #finally, send the message with the 
+
+            #finally, send the message with the
             self.ircbot.privmsg(params[0], message)
 
             self.ircbot.reset_personality()
@@ -82,13 +83,13 @@ class Mensa(Plugin):
             #get date
             dt = datetime.datetime.strptime(
                 x.text, "%A, %d. %B %Y"
-            ).strftime("%Y%m%d") 
+            ).strftime("%Y%m%d")
 
             if dt not in days:
                 days[dt] = []
             for dish in  x.getnext().findall("tr"):
                 err = dish.find("td[@class='ext_sits_speiseplan_err']")
-                
+
                 #get all dishes of the day
                 dish_type = dish.find(
                     "td[@class='ext_sits_speiseplan_links']"
@@ -129,13 +130,13 @@ class Mensa(Plugin):
         if not today:
             today = datetime.datetime.today()
         today = today.strftime("%Y%m%d")
-        
+
         if today not in self.days:
             #no mensa plan vailable
-            return None 
-        
+            return None
+
         print today, self.days[today]
-        
+
         if self.days[today] == []:
             #no information
             return None
@@ -148,7 +149,7 @@ class Mensa(Plugin):
             tmp += "    %s\n" % item["main_dish"]
             if item["side_dish"]:
                 tmp += "    %s\n" % item["side_dish"]
-        
+
         return tmp.strip().encode("utf-8")
 
 

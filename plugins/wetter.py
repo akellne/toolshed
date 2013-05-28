@@ -21,6 +21,9 @@ class Wetter(Plugin):
     AUTHOR  = "kellner@cs.uni-goettingen.de"
     VERSION = (0, 0, 1)
     ENABLED = True
+    HELP    = "!wetter  current weather forecast\n" \
+              "!wetter+1  weather forecast for tomorrow\n" \
+              "!wetter+2  weather forecast for the day after tomorrow"
 
     def __init__(self, ircbot, cache_time=datetime.timedelta(hours=1)):
         Plugin.__init__(self, ircbot, cache_time)
@@ -28,12 +31,12 @@ class Wetter(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
-        
+
         if msg.startswith("!wetter"):
             #get data from cache
-            
+
             self.ircbot.switch_personality(nick="kachelmann")
-            
+
             reload_data, self.days = self.load_cache()
             if reload_data:
                 #reload the data, if too old
@@ -52,9 +55,9 @@ class Wetter(Plugin):
                 message = "--- Wetter übermorgen in Göttingen: ---\n"
                 message += self._get_tomorrow()
 
-            #finally, send the message with the 
+            #finally, send the message with the
             self.ircbot.privmsg(params[0], message)
-            
+
             self.ircbot.reset_personality()
 
 

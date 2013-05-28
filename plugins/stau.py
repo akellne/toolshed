@@ -25,6 +25,8 @@ class Stau(Plugin):
     AUTHOR  = "kellner@cs.uni-goettingen.de"
     VERSION = (0, 0, 1)
     ENABLED = True
+    HELP    = "!stau  display the current traffic jams "\
+              "(routes: %s)" % ", ".join(ROUTES)
 
     def __init__(self, ircbot, cache_time=datetime.timedelta(minutes=5)):
         Plugin.__init__(self, ircbot, cache_time)

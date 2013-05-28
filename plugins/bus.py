@@ -18,25 +18,27 @@ class Bus(Plugin):
     AUTHOR  = "konrad.rieck@uni-goettingen.de"
     VERSION = (0, 0, 1)
     ENABLED = True
+    HELP    = "!bus  current timetable for the bus stop at " \
+              "Goldschmidtstraße"
 
     def __init__(self, ircbot, cache_time=datetime.timedelta(hours=1)):
         Plugin.__init__(self, ircbot, cache_time)
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
-        
+
         if msg.startswith("!bus"):
             self.ircbot.switch_personality(nick="busfahrer")
 
             message = "--- Gleich an der Goldschmidtstrasse ---\n"
             message += self.get_bus()
-            
+
             self.ircbot.privmsg(params[0], message)
             self.ircbot.reset_personality()
 
     def get_bus(self):
         """ load departures from the fahrplaner.de """
-        
+
         try:
             root = lxml.html.parse(URL)
             el = root.find(

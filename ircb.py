@@ -59,14 +59,21 @@ class IRCBot(IRCClient):
         self.nick(self.nickname)
 
         #get all enabled plugins
-        self.plugins = []
+        self.plugins   = []
+        self.help_text = ""
         for plugin in get_plugins():
             if plugin.ENABLED:
+                #init enabled plugins
                 log.debug("Adding enabled plugin '%s'..." % plugin)
                 self.plugins.append(plugin(self))
                 self.plugins[-1].on_init()
+
+                #add help text for overall help of the bot
+                if self.plugins[-1].HELP:
+                    self.help_text += "%s\n" % self.plugins[-1].HELP
             else:
                 log.debug("Skipping disabled plugin '%s'..." % plugin)
+
 
 
     def handle_message(self, prefix, tail, cmd, *args):
@@ -84,8 +91,9 @@ class IRCBot(IRCClient):
 
             #trigger once commands to itself
             for trigger_cmd in self.trigger_once_commands:
-                print "FOO", trigger_cmd
-                self.handle_message(prefix, trigger_cmd, "PRIVMSG", self.channel)
+                self.handle_message(
+                    prefix, trigger_cmd, "PRIVMSG", self.channel
+                )
 
             if self.shutdown_trigger_once:
                 #if shutdown_trigger_once flag is set, shutdown the bot
@@ -104,6 +112,16 @@ class IRCBot(IRCClient):
                 "trying '%s'" % self.nickname
             )
             self.nick(self.nickname)
+
+        elif cmd == "PRIVMSG":
+            #handle incoming PRIVMSG message
+            if tail == "!help":
+                #return help for all enabled plugins
+                self.switch_personality("lilhelper")
+                self.privmsg(
+                    self.channel, "--- help---\n%s" % self.help_text
+                )
+                self.reset_personality()
 
 
         #delegate incoming message to plugin
