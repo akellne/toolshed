@@ -19,6 +19,7 @@ class Fernsehen(Plugin):
     VERSION = (0, 0, 1)
     ENABLED = True
     HELP    = "!fernsehen  current tv shows\n" \
+              "!fernsehen+gleich  following tv shows\n"
               "!fernsehen+20:15  tv shows at 20:15\n" \
               "!fernsehen+22:00  tv shows at 22:00\n" \
               "!fernsehen+tipp  today's best tv shows\n" \
