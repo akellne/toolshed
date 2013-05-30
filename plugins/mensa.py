@@ -24,8 +24,11 @@ class Mensa(Plugin):
     ENABLED = True
     HELP    = "!mensa  today's dishes in the nord mensa"
 
-    def __init__(self, ircbot, cache_time=datetime.timedelta(days=1)):
-        Plugin.__init__(self, ircbot, cache_time)
+    def __init__(
+        self, ircbot, cache_time=datetime.timedelta(days=1),
+        random_message=[None, None]
+    ):
+        Plugin.__init__(self, ircbot, cache_time, random_message)
 
         #set locale to German (required for parsing the German date)
         try:

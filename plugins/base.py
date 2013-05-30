@@ -4,6 +4,8 @@ import json
 import logging
 import datetime
 import codecs
+import random
+import threading
 
 
 #setup logger for plugins
@@ -19,14 +21,22 @@ if not os.path.exists(CACHE_DIR):
 class Plugin(object):
     """
     parent class for all plugins
+
+    ircbot          is the ircbot that can be used by the plugin for the
+                    communication with the irc network
+    cache_time      should be a datetime.timedelta that specifies from which
+                    point in time the cache of the plugin is marked for 
+                    reloading
+    random_message  is an interval in which random messages should be sent
+                    the interval unit is seconds so the values must be given
+                    as floats. 
     """
     NAME    = ""
     AUTHOR  = ""
     VERSION = (0, 0, 0)
     ENABLED = False
     HELP    = ""
-
-    def __init__(self, ircbot, cache_time=None):
+    def __init__(self, ircbot, cache_time=None, random_message=[None, None]):
         #setup plugin logger
         self.log = logging.getLogger(
             "plugin '%s (%s)':" % (self.NAME, self.get_version())
@@ -44,6 +54,12 @@ class Plugin(object):
 
         #if set to None, no caching => otherwise use datetime.timedelta
         self.cache_time = cache_time
+
+        #interval in which random messages should be sent
+        self.random_message = random_message
+        
+        #random message timer (later used as pointer to the threading.Timer)
+        self.timer = None
 
 
     def on_init(self):
@@ -71,6 +87,54 @@ class Plugin(object):
         called on quitting of the plugin
         """
         self.log.debug("Quitting plugin")
+        
+        if self.timer:
+            #cancel timer and destroy on random message calls
+            #to avoid another execution of the timer
+            self.log.debug("Canceling random message timer")
+            self.timer.cancel()
+            self.on_random_message = lambda self: None
+
+
+    def on_random_message(self):
+        """
+        called on triggering of a random message
+        """
+        self.log.debug("random message triggered")
+
+
+    def start_random_message_timer(self):
+        """
+        start the random message timer, random choice from
+        the given interval
+        """
+        a, b = self.random_message
+
+        if (not a and not b) or (not a):
+            #ignore invalid interval
+            return
+
+        if a and not b:
+            #set choice to given value
+            c = a
+        else:
+            #choose random time from given interval
+            c = random.uniform(a, b)
+
+        if self.timer:
+            #cancel current timer, before starting a new timer
+            self.log.debug("Canceling running random message timer")
+            self.timer.cancel()
+
+        self.log.debug(
+            "Starting random timer in %s ms (chosen from interval [%s, %s])" % (
+                c, a, b
+            )
+        )
+
+        #start the timer
+        self.timer = threading.Timer(c, self.on_random_message)
+        self.timer.start()
 
 
     def get_version(self):
@@ -132,5 +196,7 @@ class Plugin(object):
             f.write(json.dumps(data))
 
 
+    def __str__(self):
+        return "%s, %s %s" % (self.NAME, self.AUTHOR, self.get_version())
 
 

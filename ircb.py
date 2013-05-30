@@ -103,6 +103,11 @@ class IRCBot(IRCClient):
                     "'shutdown_trigger_once' flag is set."
                 )
                 self.shutdown()
+            
+            #start random message timer for each plugins
+            for plugin in self.plugins:
+                plugin.start_random_message_timer()
+
 
         elif cmd == ERR_NICKNAMEINUSE:
             #nick name in use => add underscore

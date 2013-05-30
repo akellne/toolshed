@@ -28,8 +28,11 @@ class Stau(Plugin):
     HELP    = "!stau  display the current traffic jams "\
               "(routes: %s)" % ", ".join(ROUTES)
 
-    def __init__(self, ircbot, cache_time=datetime.timedelta(minutes=5)):
-        Plugin.__init__(self, ircbot, cache_time)
+    def __init__(
+        self, ircbot, cache_time=datetime.timedelta(minutes=5),
+        random_message=[None, None]
+    ):
+        Plugin.__init__(self, ircbot, cache_time, random_message)
 
 
     def on_privmsg(self, msg, *params):

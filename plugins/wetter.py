@@ -25,8 +25,11 @@ class Wetter(Plugin):
               "!wetter+1  weather forecast for tomorrow\n" \
               "!wetter+2  weather forecast for the day after tomorrow"
 
-    def __init__(self, ircbot, cache_time=datetime.timedelta(hours=1)):
-        Plugin.__init__(self, ircbot, cache_time)
+    def __init__(
+        self, ircbot, cache_time=datetime.timedelta(hours=1),
+        random_message=[None, None]
+    ):
+        Plugin.__init__(self, ircbot, cache_time, random_message)
 
 
     def on_privmsg(self, msg, *params):

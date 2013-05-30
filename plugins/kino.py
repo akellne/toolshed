@@ -21,8 +21,11 @@ class Kino(Plugin):
     HELP    = "!kino  today's movies in the cinemaxx"
 
 
-    def __init__(self, ircbot, cache_time=datetime.timedelta(hours=1)):
-        Plugin.__init__(self, ircbot, cache_time)
+    def __init__(
+        self, ircbot, cache_time=datetime.timedelta(hours=1),
+        random_message=[None, None]
+    ):
+        Plugin.__init__(self, ircbot, cache_time, random_message)
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)

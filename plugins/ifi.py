@@ -26,16 +26,19 @@ class IfINews(Plugin):
     ENABLED = True
     HELP    = "!ifi  shows the cureent ifi news"
 
-    def __init__(self, ircbot, cache_time=datetime.timedelta(hours=1)):
-        Plugin.__init__(self, ircbot, cache_time)
+    def __init__(
+        self, ircbot, cache_time=datetime.timedelta(hours=1),
+        random_message=[None, None]
+    ):
+        Plugin.__init__(self, ircbot, cache_time, random_message)
 
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
-        
+
         if msg == "!ifi":
             self.ircbot.switch_personality(nick="chiefsec")
-            
+
             #get data from cache
             reload_data, self.data = self.load_cache()
             if reload_data:
@@ -48,9 +51,9 @@ class IfINews(Plugin):
             message = "--- IfI News: ---\n"
             message += self.data
 
-            #finally, send the message with the 
+            #finally, send the message with the
             self.ircbot.privmsg(params[0], message)
-            
+
             self.ircbot.reset_personality()
 
 
@@ -61,7 +64,7 @@ class IfINews(Plugin):
         #load url and parse it with simple regex
         f   = urllib2.urlopen(URL)
         ics = f.read()
-        
+
         #parse ics data
         li = []
         for res in re.compile(
@@ -79,9 +82,9 @@ class IfINews(Plugin):
                             item[k.lower()] = datetime.datetime.strptime(
                                 v.strip(), ICS_UTC
                             )
-            
+
             li.append(item)
-        
+
         #build message
         tmp = ""
         for item in sorted(li, key=lambda item: item["dtstart"]):

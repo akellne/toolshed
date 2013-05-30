@@ -26,8 +26,12 @@ class Fernsehen(Plugin):
               "!fernsehen+filme  today's best movies" \
 
 
-    def __init__(self, ircbot, cache_time=datetime.timedelta(hours=1)):
-        Plugin.__init__(self, ircbot, cache_time)
+    def __init__(
+        self, ircbot, cache_time=datetime.timedelta(hours=1),
+        random_message=[None, None]
+    ):
+        Plugin.__init__(self, ircbot, cache_time, random_message)
+
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
@@ -50,6 +54,7 @@ class Fernsehen(Plugin):
 
             self.ircbot.privmsg(params[0], message)
             self.ircbot.reset_personality()
+
 
     def get_fernsehen(self, page):
         """ load results from tvmovie.de """

@@ -20,8 +20,12 @@ class Bundesliga(Plugin):
     ENABLED = True
     HELP    = "!bundesliga  current results of the Bundesliga"
 
-    def __init__(self, ircbot, cache_time=datetime.timedelta(hours=1)):
-        Plugin.__init__(self, ircbot, cache_time)
+    def __init__(
+        self, ircbot, cache_time=datetime.timedelta(hours=1),
+        random_message=[None, None]
+    ):
+        Plugin.__init__(self, ircbot, cache_time, random_message)
+
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
@@ -31,6 +35,7 @@ class Bundesliga(Plugin):
             message = self.get_bundesliga()
             self.ircbot.privmsg(params[0], message)
             self.ircbot.reset_personality()
+
 
     def get_bundesliga(self):
         """ load results from sport.de """

@@ -29,6 +29,9 @@ STATIC_MESSAGES = {
         "so how much do you pay?",
         "be serious nobody is getting killed here!"
     ],
+    "!;)" : [
+        "the world is elefantastic!",
+    ],
 }
 
 
@@ -43,6 +46,12 @@ class Static(Plugin):
     ENABLED = True
     HELP    = ""
 
+    def __init__(
+        self, ircbot, cache_time=None, random_message=[None, None]
+    ):
+        Plugin.__init__(self, ircbot, cache_time, random_message)
+
+    
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
 

@@ -24,8 +24,11 @@ class FastFood(Plugin):
     ENABLED = True
     HELP    = "!fastfood  display the king of the month"
 
-    def __init__(self, ircbot, cache_time=datetime.timedelta(days=1)):
-        Plugin.__init__(self, ircbot, cache_time)
+    def __init__(
+        self, ircbot, cache_time=datetime.timedelta(days=1),
+        random_message=[None, None]
+    ):
+        Plugin.__init__(self, ircbot, cache_time, random_message)
 
 
     def on_privmsg(self, msg, *params):
