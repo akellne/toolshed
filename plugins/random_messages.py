@@ -36,7 +36,7 @@ RANDOM_MESSAGES = [
     "Who's been holding up the damn elevator?",
     "Logic is the beginning of wisdom; not the end.",
     "Shields up! Rrrrred alert!",
-    "I hate prototypes."
+    "I hate prototypes.",
     "Hello? Pizza delivery for uh... I.C. Wiener?",
     "Hooray!",
     "Neat!",
@@ -56,7 +56,7 @@ class Static(Plugin):
 
     def __init__(
         self, ircbot, cache_time=None, 
-        random_message=[1800, 5400] #between 30 min and 90 min
+        random_message=[3600, 10800] #between 60 min and 180 min
     ):
         Plugin.__init__(self, ircbot, cache_time, random_message)
 
