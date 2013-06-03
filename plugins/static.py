@@ -32,6 +32,14 @@ STATIC_MESSAGES = {
     "!;)" : [
         "the world is elefantastic!",
     ],
+    "!currywurst" : [
+        "Ruhrpott Carpaccio",
+        "Truckerfrühstück",
+        "Prenzelbergplatte",
+        "Mantateller",
+        "Gelsenkirchner Geschnetzeltes",
+        "Kreuzberger Filet",
+    ],
 }
 
 
