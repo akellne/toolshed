@@ -66,7 +66,7 @@ class Analyse(Plugin):
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
 
-        if msg == "!analyse":
+        if msg in ("!analyse", "!analyze", "!sentiment"):
             #react to command
 
             self.ircbot.switch_personality("yogeshwar")
