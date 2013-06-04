@@ -86,9 +86,9 @@ class Analyse(Plugin):
             #    self.days = self._get_dishes()
             #    self.save_cache(data=self.days)
 
-            message =  "--- sentiment analyse ---\n"
+            message =  "--- sentiment analysis ---\n"
             message += "%2.2f %% positive  %2.2f %% negative "\
-                       "%2.2f %% neutral\n" % (
+                       "%2.2f %% unknown\n" % (
                             self.count["positive"] / float(self.count["total"]) * 100,
                             self.count["negative"] / float(self.count["total"]) * 100,
                             self.count["neutral"] / float(self.count["total"]) * 100
