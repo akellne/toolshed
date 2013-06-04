@@ -23,5 +23,10 @@ falsche
 falsches
 fail
 nein
+nicht
+not
+falsch
+wrong
+
 
 

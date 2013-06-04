@@ -70,7 +70,7 @@ class Analyse(Plugin):
         for s in (".", ",", "!"):
             msg = msg.replace(s, "")
 
-        words = msg.split(" ")
+        words = msg.lower().split(" ")
         for w in words:
             self.count["total"] += 1
             if w in self.words["positive"]:

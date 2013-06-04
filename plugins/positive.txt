@@ -26,4 +26,9 @@ geiles
 ja
 yes
 ok
+jo
+jep
+yep
+wahr
+true
 
