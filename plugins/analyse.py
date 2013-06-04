@@ -66,6 +66,10 @@ class Analyse(Plugin):
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
 
+        #remove some characters
+        for s in (".", ",", "!"):
+            msg = msg.replace(s, "")
+
         words = msg.split(" ")
         for w in words:
             self.count["total"] += 1
@@ -87,7 +91,7 @@ class Analyse(Plugin):
             #    self.save_cache(data=self.days)
 
             message =  "--- sentiment analysis ---\n"
-            message += "%2.2f %% positive  %2.2f %% negative "\
+            message += "%2.2f %% positive  %2.2f %% negative  "\
                        "%2.2f %% unknown\n" % (
                             self.count["positive"] / float(self.count["total"]) * 100,
                             self.count["negative"] / float(self.count["total"]) * 100,
