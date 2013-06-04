@@ -27,19 +27,18 @@ class Analyse(Plugin):
     ):
         Plugin.__init__(self, ircbot, cache_time, random_message)
 
-        #dict to store counts
-        self.count = {
-            "positive" : 0,
-            "negative" : 0,
-            "neutral"  : 0,
-            "total"    : 0,
-        }
+        #get data from cache
+        reload_data, self.count = self.load_cache()
+        if not self.count:
+            #not cached yet, reset counts
+            self.count = {}
 
         #dict with positive and negative words that are matched
         self.words = {
             "positive" : [],
             "negative" : []
         }
+        #load wordlists
         self._load_words()
 
 
@@ -63,39 +62,24 @@ class Analyse(Plugin):
             self.log.error(e)
         print self.words
 
+
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
 
-        #remove some characters
-        for s in (".", ",", "!"):
-            msg = msg.replace(s, "")
-
-        words = msg.lower().split(" ")
-        for w in words:
-            self.count["total"] += 1
-            if w in self.words["positive"]:
-                self.count["positive"] += 1
-            elif w in self.words["negative"]:
-                self.count["negative"] += 1
-            else:
-                self.count["neutral"] += 1
-
         if msg == "!analyse":
+            #react to command
+
             self.ircbot.switch_personality("yogeshwar")
 
-            #get data from cache
-            #reload_data, self.days = self.load_cache()
-            #if reload_data:
-                #reload the data, if too old
-            #    self.days = self._get_dishes()
-            #    self.save_cache(data=self.days)
-
             message =  "--- sentiment analysis ---\n"
-            message += "%2.2f %% positive  %2.2f %% negative  "\
-                       "%2.2f %% unknown\n" % (
-                            self.count["positive"] / float(self.count["total"]) * 100,
-                            self.count["negative"] / float(self.count["total"]) * 100,
-                            self.count["neutral"] / float(self.count["total"]) * 100
+            for k in sorted(self.count.keys()):
+                dt = datetime.datetime.strptime(k, "%Y%m%d")
+                message += "%s: %2.2f%% (+)    %2.2f%% (-)    "\
+                       "%2.2f%% (unknown)\n" % (
+                            dt.strftime("%d/%m/%Y"),
+                            self.count[k]["positive"] / float(self.count[k]["total"]) * 100,
+                            self.count[k]["negative"] / float(self.count[k]["total"]) * 100,
+                            self.count[k]["neutral"] / float(self.count[k]["total"]) * 100
                        )
 
             #finally, send the message with the
@@ -103,6 +87,41 @@ class Analyse(Plugin):
 
             self.ircbot.reset_personality()
 
+        else:
+            #not a command => analyse message
 
-#a = Analyse(None)
-#for
+            #get current date and use it as key for storing counts
+            dt = datetime.datetime.now().strftime("%Y%m%d")
+            if dt not in self.count:
+                self.count[dt] = {
+                    "positive" : 0,
+                    "negative" : 0,
+                    "neutral"  : 0,
+                    "total"    : 0,
+                }
+
+
+            #remove some characters
+            for s in (".", ",", "!"):
+                msg = msg.replace(s, "")
+
+            #split message by spaces
+            words = msg.lower().split(" ")
+            for w in words:
+                #increase counts depending on word type
+                self.count[dt]["total"] += 1
+                if w in self.words["positive"]:
+                    self.count[dt]["positive"] += 1
+                elif w in self.words["negative"]:
+                    self.count[dt]["negative"] += 1
+                else:
+                    self.count[dt]["neutral"] += 1
+
+
+    def on_quit(self):
+        Plugin.on_quit(self)
+
+        #save all results in the cache
+        self.save_cache(data=self.count)
+
+

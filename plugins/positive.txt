@@ -31,4 +31,16 @@ jep
 yep
 wahr
 true
-
+super
+great
+awesome
+terrific
+genius
+marvelous
+marvellous
+gorgeous
+fabulous
+unbelievable
+fabulously
+brilliant
+wicked

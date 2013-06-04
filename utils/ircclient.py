@@ -405,10 +405,13 @@ class IRCClient(asynchat.async_chat):
         self.send_data("LIST %s" % channel)
 
     def privmsg(self, receiver, message):
-        for msg in message.split("\n"):
-            self.send_data("PRIVMSG %s :%s" % (receiver, msg))
-            time.sleep(MESSAGE_DELAY)
-
+        try:
+            for msg in message.split("\n"):
+                self.send_data("PRIVMSG %s :%s" % (receiver, msg))
+                time.sleep(MESSAGE_DELAY)
+        except KeyboardInterrupt:
+            #do nothing, but catch for graceful ending
+            pass
 
     def who(self, name):
         self.send_data("WHO %s" % name)
