@@ -129,7 +129,10 @@ class Wetter(Plugin):
             return None
 
         tmp = ""
-        for item in self.days[today]:
+        for item in ("morgens", "mittags", "abends", "nachts"):
+            if item not in self.days[today]:
+                continue
+            
             tmp += "%s:\n  %s, %s (%s), %s\n" % (
                 item,
                 self.days[today][item]["degree"],
