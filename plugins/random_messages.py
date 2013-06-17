@@ -6,7 +6,7 @@ import random
 from base import Plugin
 
 #random messages
-RANDOM_MESSAGES = open('random_messages.txt').read().splitlines()
+RANDOM_MESSAGES = open('plugins/random_messages.txt').read().splitlines()
 
 class Static(Plugin):
     """
