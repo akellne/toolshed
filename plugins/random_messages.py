@@ -20,7 +20,7 @@ class Static(Plugin):
 
     def __init__(
         self, ircbot, cache_time=None, 
-        random_message=[3600, 10800] #between 60 min and 180 min
+        random_message=[2 * 60, 8 * 60] # between 2 h and 8 h
     ):
         Plugin.__init__(self, ircbot, cache_time, random_message)
 

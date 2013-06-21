@@ -1,0 +1,71 @@
+Grund ist die Verspätung eines vorausfahrenden Zuges
+Grund sind Gleisarbeiten
+Grund sind Unwetter auf der Strecke
+Grund sind Bauarbeiten
+Grund sind Wartungsarbeiten im Gleis
+Grund sind Personen im Gleis
+Grund ist ein Polizeieinsatz
+Grund ist eine verspätete Bereitstellung
+Grund ist ein Böschungsbrand
+Grund ist eine Streckensperrung
+Grund ist eine Brückensperrung
+Grund ist der Ausfall des Triebfahrzeugs
+Grund ist ein Defekt am Triebfahrzeug
+Grund ist eine Weichenstörung
+Grund ist eine Störung am Stellwerk
+Grund ist eine defekte Weiche
+Grund ist ein Personenunfall
+Grund ist ein entgleister Zug
+Grund sind Nutztiere im Gleis
+Grund ist eine defekte Stellanlage
+Grund ist eine Überfüllung des Zuges
+Grund ist der Ausfall eines vorausfahrenden Zuges
+Grund ist ein sehr hohes Passagieraufkommen
+Grund ist ein Steinabbruch im Gleis
+Grund sind überflutete Bahnanlagen
+Grund ist der Transport von Gefahrengut
+Grund ist ein Achsenschaden
+Grund ist ein Schimmelpilzbefall
+Grund ist eine Fehlfunktion der Schließanlage
+Grund ist ein Ausfall der Klimaanlage
+Grund ist ein Brand im Stellwerk
+Grund ist Feuer im Triebfahrzeug
+Grund ist die Sperrung des Gleises
+Grund sind Bauarbeiten am Zielbahnhof
+Grund ist eine Pizzalieferung
+Grund ist ein Unfall mit Personenschaden
+Grund ist ein Stromausfall im Stellwerk
+Grund ist ein Kindergeburtstag
+Grund ist die Vereisung einer Weiche
+Grund ist starker Schneefall
+Grund ist eine defekte Heizungsanlage
+Grund sind winterbedingte Störungen
+Grund sind wetterbedingte Störungen
+Grund sind Kinder im Gleis
+Grund ist eine kranke Katze
+Grund ist ein Leitungsschaden
+Grund ist Blitzeinschlag am Zielbahnhof
+Grund sind Waldbrände
+Grund ist eine Unwetterwarnung
+Grund ist eine Unterspülung des Gleisbetts
+Grund ist eine Verklemmung der Stellanlage
+Grund sind Schäden am Gleisbett
+Grund sind Probleme bei der Bereitstellung
+Grund ist eine Störung der Oberleitung
+Grund sind defekte Oberleitungen
+Grund ist ein Gefangenentransport
+Grund ist eine Froschwanderung
+Grund sind Wildtiere auf der Strecke
+Grund ist ein Notarzteinsatz
+Grund ist ein Militäreinsatz
+Grund ist die Zeitumstellung
+Grund ist eine Störung der Zugleitung
+Grund ist ein Vollrausch des Zugführers
+Grund ist fehlendes Zugpersonal
+Grund ist ein Verkehrsunfall am Gleis
+Grund ist aufsteigende Bodenfeuchte
+Grund ist der Suizid eines Hundes
+Grund ist eine verspätete Übergabe des Zuges
+Grund ist eine Bahnsteigwende
+Grund ist ein außerplanmäßiger Halt
+
