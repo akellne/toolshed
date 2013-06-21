@@ -1,16 +1,45 @@
+!mensa
+!wetter
+*pups*
 A strange game. The only winning move is not to play.
 Acting is reacting.
+Alles fit?
+Alles roger?
 Are you talkin' to me?
+Besser smart second mover als sich mit ner hasty paper submission verzocken
+Bevor wir andauernd neue Ventures launchen, sollten wir erstmal die Loose End tieen.
+Bin raus aus dem Call. Ich kann hier keinen Value adden.
+Bis zum Launch bleiben wir im Stealth mode, dann können wir den First Mover ambushen
+Bitte nicht alle auf einmal. Danke.
+Bitte nicht so overengineeren. Wollen ja nicht das Haus burnen, um das Pig zu roasten.
 Come with me if you want to live!
 Computers are my forte!
 Cuanto más profunda sea tu caida, más alto llegarás.
+Das Concept ist zu fuzzy. Wir müssen durch den Clutter breaken
+Das Topic bitte eng beobachten, monitoren und reliable forecasten.
+Das einzige, was diese Gruppe noch saven kann, ist ein transformational Deal.
+Das eskalier ich bin aus F2
+Das kann hier so nicht weitergehen.
 Demasiada perfección es un error.
+Deshalb nannten sie ihn Elvis.
 Dick Laurent is dead...
+Die Analysis ist mir zu fuzzy. Könnt ihr das mit nem Case konkret machen?
+Die Data Points sind mir zu anecdotal. Ich brauch ordentliche Samplings und Drilldowns.
+Diese quick Wins verstellen uns den Blick auf das Big Picture
+Direction passt, aber ist mir noch zu incremental. Wir brauchen eine Turnkey Solution.
+Droopy hat den Lead. Wenn er fein damit ist, sind wir agreed.
+Droopy will die Slides bis EOB? Ja bin ich jetzt sein Direct Report oder was?
+Eine Greenfield-Solution ist zu costly. Lieber Upcycling der Legacy-Systeme.
 Every man dies, not every man really lives. 
 Every man... every man has to go through hell to reach paradise.
+Ey!
 Fasten your seat belts, it’s going to be a bumpy night.
+Gasgeben Leute! Jetzte!
+Gähn.
 Happiness is only real when shared. 
 Has anybody seen Sam Lowry?
+Hehe
+Heute will ich nix pitchen, heute will ich Insights. Ich bin im Listening Mode.
 Houston, we have a problem.
 I am 100% sure that we're not completely sure.
 I feel the need... the need for speed.
@@ -19,7 +48,12 @@ I see dead people.
 I sense a disturbance in the Force.
 I thought I wanted a career, turns out I just wanted paychecks.
 I've just picked up a fault in the AE35 unit. It's going to go 100% failure in 72 hours.
+Ich bin off.
+Ich brauch mehr Action
+Ich geh dann mal.
+Ich hab hunger
 If I agreed with you we'd both be wrong.
+Im Deck muss mehr Fleisch hinter die Bulletpoints. Sieht noch way too Barebone aus.
 Initiative comes to thems that wait.
 It had been a wonderful evening and what I needed now, to give it the perfect ending, was a little of the Ludwig Van.
 It really tied the room together.
@@ -28,13 +62,22 @@ It's a strange world.
 It's not the first time, it won't be the last, but I'm in that doghouse again.
 I’m gonna make him an offer he can’t refuse.
 Just forget you ever saw it. It's better that way.
+Kann ich von den Slides bitte Carbons bekommen? Ich will das was highlighten.
+Kommt noch was?
+Labert nicht.
 Life is great!"
+Long time, no see. Wir müssen dringend mal nen Touchbase aufsetzn
 Mi alma tiene sed de Dios, del Dios vivo.
 No 9000 computer has ever made a mistake or distorted information.
 No hay banda.
 No me duele matarte porque sé que la muerte no existe
+Oh mann, ist das öde hier.
 Oh, Elvis seems to be around.
+Pizza anyone?
+Requested ist nicht delivered. Da hättest Du follow-uppen müssen.
+Schon feierabend?
 Shit... I'm waiting for the sun to shine.
+Sorry, hab nur High-Priority-Actionables auf dem Screen. Für den Rest bin ich zu tight getaktet.
 Soylent Green is people!
 Take your stinkin’ paws off me, you damn dirty ape!
 That's just the way it is!
@@ -45,14 +88,27 @@ This one who's blind. She's the one that can see.
 Toto, I’ve a feeling we’re not in Kansas anymore.
 Tú disparas para encontrarte, yo lo hago para desaparecer.
 Un disparo limpio y delicado, destruye lo preciso.
+Und läufts?
+Viel Spaß noch
+Was geht?
 Wax on, wax off.
 We all go a little mad sometimes
+Wenn wir nicht lernen im Social Stream zu schwimmen, kriegen wir keinen conceptual Liftoff
 What is this mess? An empty desk is an efficient desk.
+What's up?
 Why are there people like Frank?
+Wir dürfen nicht immer nur das Kool Aid tringen, wir müssen auch mal was challengen.
+Wir können uns hier keinen Standstill erlauben. Keep moving the cheese.
+Wir müssen das Thema weiter stressen, sonst kriegt es keine Traction
+Wir müssen die Workforce der SBU endlich rightsizen
+Wir müssen mehr Value adden, sonst wird das ein Hard Sell
+Wo ist der Assitant Deputy Vice President für Dry Canned Foods?
+Woanders ist mehr los
 Ya no temes morir, por eso eres un enemigo peligroso.
 You learn about loss.
 You're only as healthy as you feel.
-Deshalb nannten sie ihn Elvis.
-Heute will ich nix pitchen, heute will ich Insights. Ich bin im Listening Mode.
-Der will die Slides bis EOB? Ja bin ich jetzt sein Direct Report oder was?
-Sorry, hab nur High-Priority-Actionables auf dem Screen.
+droopy: und noch was vor?
+droopy: was geht?
+langeweilig!
+screwy: geht ganz gut, oder?
+screwy: was los?
