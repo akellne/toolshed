@@ -73,7 +73,7 @@ class Static(Plugin):
         return text
 
     def on_random_message(self):
-        self.ircbot.privmsg(self.ircbot.channel, durchsage())
+        self.ircbot.privmsg(self.ircbot.channel, self.durchsage())
         self.start_random_message_timer()
 
     def on_privmsg(self, msg, *params):
