@@ -54,10 +54,22 @@ class Static(Plugin):
     
     def durchsage(self):
         (x,y) = self.get_cities()
-        text = "Information zu %s nach %s über %s, Abfahrt %s, " \
-               "heute circa %d Minuten später. %s." % \
-               (self.get_train(), x, y, self.get_time(), \
-                self.get_delay(), self.get_reason())
+
+        r = random.random()
+        if r < 0.05:
+            text = "Vorsicht an Gleis %d, ein Zug fährt durch!" % random.randint(1,10)
+        elif r < 0.10:
+            text = "Information zu %s, nach %s über %s, Abfahrt %s, " \
+                   "heute in umgekehrter Wagenreihung." % \
+                   (self.get_train(), x, y, self.get_time())
+        else:
+            text = "Information zu %s nach %s über %s, Abfahrt %s, " \
+                   "heute circa %d Minuten später. %s." % \
+                   (self.get_train(), x, y, self.get_time(), \
+                    self.get_delay(), self.get_reason())
+                            
+        # Make action
+        text = "\x01ACTION " + text + "\x01"
         return text
 
     def on_random_message(self):
