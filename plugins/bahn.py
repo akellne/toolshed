@@ -38,7 +38,7 @@ class Bahn(Plugin):
         Plugin.on_privmsg(self, msg, *params)
 
         if msg.startswith("!bahn"):
-            self.ircbot.switch_personality(nick="diebahn")
+            self.ircbot.switch_personality(nick="DB")
             if msg == "!bahn+berlin":
                 message = self._get_bahn(to_="Berlin")
             elif msg == "!bahn+hannover":
@@ -102,6 +102,6 @@ class Bahn(Plugin):
         except:
             tmp = "Keine Ahnung. Mein Parser ist kaputt"
 
-            return tmp.strip().encode("utf-8")
+        return tmp.strip().encode("utf-8")
 
 
