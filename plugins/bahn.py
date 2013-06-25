@@ -56,48 +56,52 @@ class Bahn(Plugin):
         """
         get trains from bahn webpage
         """
-        #load url, parse it with html parser and get form
-        form = lxml.html.parse(URL).getroot().forms[0]
+        try:
+            #load url, parse it with html parser and get form
+            form = lxml.html.parse(URL).getroot().forms[0]
 
-        #set from and to parameter of the form
-        form.fields["REQ0JourneyStopsS0G"] = from_
-        form.fields["REQ0JourneyStopsZ0G"] = to_
+            #set from and to parameter of the form
+            form.fields["REQ0JourneyStopsS0G"] = from_
+            form.fields["REQ0JourneyStopsZ0G"] = to_
 
-        #submit the form and get train connections
-        root = lxml.html.parse(
-            lxml.html.submit_form(form, extra_values={'start': "Suchen"})
-        )
-
-        #parse results from returned table
-        items = []
-        for tr in root.xpath("//table/tr"):
-            if tr.find("td[@class='overview timelink']") is not None:
-                ab, an       = tr.xpath("td[@class='overview timelink']/a/text()")
-                vab, van     = tr.xpath("td[@class='overview tprt']//text()")
-                umstg, dauer = tr.xpath("td[@class='overview']//text()")
-                zuege        = tr.xpath("td[@class='overview iphonepfeil']//text()")
-                it = {
-                    "ab"             : ab,
-                    "an"             : an,
-                    "verspaetung_ab" : vab,
-                    "verspaetung_an" : van,
-                    "umstiege"       : umstg,
-                    "dauer"          : dauer,
-                    "zuege"          : zuege
-                }
-                items.append(it)
-
-        #prepare message from given connections
-        tmp = u"--- Nächste Zugverbindungen: %s - %s ---\n" % (from_, to_)
-        for item in items:
-            tmp += "ab %s (%s min) an %s (%s min), %sx umsteigen, " \
-                   "%s, %s\n" % (
-                item["ab"], item["verspaetung_ab"],
-                item["an"], item["verspaetung_an"],
-                item["umstiege"], item["dauer"],
-                ", ".join(item["zuege"])
+            #submit the form and get train connections
+            root = lxml.html.parse(
+                lxml.html.submit_form(form, extra_values={'start': "Suchen"})
             )
 
-        return tmp.strip().encode("utf-8")
+            #parse results from returned table
+            items = []
+            for tr in root.xpath("//table/tr"):
+                if tr.find("td[@class='overview timelink']") is not None:
+                    ab, an       = tr.xpath("td[@class='overview timelink']/a/text()")
+                    vab, van     = tr.xpath("td[@class='overview tprt']//text()")
+                    umstg, dauer = tr.xpath("td[@class='overview']//text()")
+                    zuege        = tr.xpath("td[@class='overview iphonepfeil']//text()")
+                    it = {
+                        "ab"             : ab,
+                        "an"             : an,
+                        "verspaetung_ab" : vab,
+                        "verspaetung_an" : van,
+                        "umstiege"       : umstg,
+                        "dauer"          : dauer,
+                        "zuege"          : zuege
+                    }
+                    items.append(it)
+
+            #prepare message from given connections
+            tmp = u"--- Nächste Zugverbindungen: %s - %s ---\n" % (from_, to_)
+            for item in items:
+                tmp += "ab %s (%s min) an %s (%s min), %sx umsteigen, " \
+                       "%s, %s\n" % (
+                    item["ab"], item["verspaetung_ab"],
+                    item["an"], item["verspaetung_an"],
+                    item["umstiege"], item["dauer"],
+                    ", ".join(item["zuege"])
+                )
+
+        except:
+            tmp = "Keine Ahnung. Mein Parser ist kaputt"
+
+            return tmp.strip().encode("utf-8")
 
 
