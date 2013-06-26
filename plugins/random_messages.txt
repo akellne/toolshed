@@ -1,6 +1,17 @@
 !mensa
 !wetter
+!wetter+1
+!wetter+2
+!fastfood
+!fernsehen
+!fernsehen+tipp
+!fernsehen+filme
+!ifi
+!stau
 !kino
+!bahn+berlin
+!bahn+hannover
+!bus
 !bundesliga
 *pups*
 *hust*
@@ -110,6 +121,10 @@ You learn about loss.
 You're only as healthy as you feel.
 droopy: und noch was vor?
 droopy: was geht?
+droopy: was laeuft?
+droopy: na... alles roger bei dir
 langeweilig!
 screwy: geht ganz gut, oder?
 screwy: was los?
+screwy: alter socke, was geht...
+screwy: langweilig hier, oder?
