@@ -1,23 +1,24 @@
+!bahn+berlin
+!bahn+hannover
+!bundesliga
+!bus
+!fastfood
+!fernsehen
+!fernsehen+filme
+!fernsehen+tipp
+!ifi
+!kino
 !mensa
+!stau
 !wetter
 !wetter+1
 !wetter+2
-!fastfood
-!fernsehen
-!fernsehen+tipp
-!fernsehen+filme
-!ifi
-!stau
-!kino
-!bahn+berlin
-!bahn+hannover
-!bus
-!bundesliga
-*pups*
 *hust*
+*pups*
 *zzz*
 A strange game. The only winning move is not to play.
 Acting is reacting.
+Aktualisiere Sie Ihre Bank-Konto Online! Jetzt!
 Alles fit?
 Alles roger?
 Are you talkin to me?
@@ -58,11 +59,11 @@ Heute will ich nix pitchen, heute will ich Insights. Ich bin im Listening Mode.
 Houston, we have a problem.
 I am 100% sure that we are not completely sure.
 I feel the need... the need for speed.
+I have just picked up a fault in the AE35 unit. It is going to go 100% failure in 72 hours.
 I looked for you in my closet tonight.
 I see dead people.
 I sense a disturbance in the Force.
 I thought I wanted a career, turns out I just wanted paychecks.
-I have just picked up a fault in the AE35 unit. It is going to go 100% failure in 72 hours.
 Ich bin off.
 Ich brauch mehr Action
 Ich geh dann mal.
@@ -110,6 +111,7 @@ What is this mess? An empty desk is an efficient desk.
 What's up?
 Why are there people like Frank?
 Wir dürfen nicht immer nur das Kool Aid bringen, wir müssen auch mal was challengen.
+Wir kontaktierten bisher ohne Antwort, bitte finden Sie den Anhang und zuruck zu uns
 Wir können uns hier keinen Standstill erlauben. Keep moving the cheese.
 Wir müssen das Thema weiter stressen, sonst kriegt es keine Traction
 Wir müssen die Workforce der SBU endlich rightsizen
@@ -119,15 +121,14 @@ Woanders ist mehr los
 Ya no temes morir, por eso eres un enemigo peligroso.
 You learn about loss.
 You're only as healthy as you feel.
+dU nIcht CaSanova im BeTt?
+droopy: na... alles roger bei dir
+droopy: sag mal was schlaues!
 droopy: und noch was vor?
 droopy: was geht?
 droopy: was laeuft?
-droopy: na... alles roger bei dir
 langeweilig!
-screwy: geht ganz gut, oder?
-screwy: was los?
 screwy: alter socke, was geht...
+screwy: geht ganz gut, oder?
 screwy: langweilig hier, oder?
-Wir kontaktierten bisher ohne Antwort, bitte finden Sie den Anhang und zuruck zu uns
-dU nIcht CaSanova im BeTt?
-Aktualisiere Sie Ihre Bank-Konto Online! Jetzt!
+screwy: was los?
