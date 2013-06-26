@@ -66,5 +66,8 @@ Grund ist ein Verkehrsunfall am Gleis
 Grund ist aufsteigende Bodenfeuchte
 Grund ist der Suizid eines Hundes
 Grund ist eine verspätete Übergabe des Zuges
-Grund ist eine Bahnsteigwende
+Grund ist eine außerplanmäßige Bahnsteigwende
 Grund ist ein außerplanmäßiger Halt
+Grund ist Schienenersatzverkehr
+Grund ist Gleiswechselbetrieb
+Grund ist eine Kurzführung mit Inselbetrieb
