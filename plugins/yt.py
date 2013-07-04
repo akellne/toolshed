@@ -8,8 +8,10 @@ import datetime
 import lxml.html
 import json
 import random
+import urllib2
 
 from base import Plugin
+
 
 
 class YouTube(Plugin):
@@ -51,16 +53,19 @@ class YouTube(Plugin):
                 #create https url
                 url = "http://www.%s" % res.group(1)
 
-                #store url
-                self.urls.append(url)
-                self.save_cache(data=self.urls)
+                if url not in self.urls:
+                    #store url, if not existing yet
+                    self.urls.append(url)
+                    self.save_cache(data=self.urls)
 
                 #get info from youtube url
                 info = self._get_information(self.urls[-1])
                 if info["comments"]:
                     self.ircbot.privmsg(
                         params[0],
-                        random.choice(info["comments"]).encode("utf-8")
+                        random.choice(info["comments"])[:255].encode(
+                            "ascii", "ignore"
+                        )
                     )
 
 
@@ -70,14 +75,17 @@ class YouTube(Plugin):
         """
         try:
             #load url and parse it with html parser
-            root = lxml.html.parse(url)
+            #hack via urllib2 to set timeout
+            html = urllib2.urlopen(url, timeout=60)
+            root =  lxml.html.fromstring(html.read())
 
             #get relevant part
             comments = root.xpath(
                 "//div[@class='comment-text']/p/text()"
             )
 
-        except:
+        except IOError, e:
+            print "====>", e
             comments = None
 
         return {
