@@ -21,12 +21,13 @@ class Stau(Plugin):
     """
     class to parse the traffic jam notifications
     """
-    NAME    = "Stau"
-    AUTHOR  = "kellner@cs.uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = "!stau  display the current traffic jams "\
-              "(routes: %s)" % ", ".join(ROUTES)
+    NAME     = "Stau"
+    AUTHOR   = "kellner@cs.uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = "!stau  display the current traffic jams "\
+               "(routes: %s)" % ", ".join(ROUTES)
+    CHANNELS = []
 
     def __init__(
         self, ircbot, cache_time=datetime.timedelta(minutes=5),
@@ -37,6 +38,10 @@ class Stau(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg == "!stau":
             #get data from cache

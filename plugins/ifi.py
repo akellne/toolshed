@@ -20,11 +20,12 @@ class IfINews(Plugin):
     """
     class to parse the ics calendar of the IfI webpage
     """
-    NAME    = "IfI News"
-    AUTHOR  = "kellner@cs.uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = "!ifi  shows the cureent ifi news"
+    NAME     = "IfI News"
+    AUTHOR   = "kellner@cs.uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = "!ifi  shows the cureent ifi news"
+    CHANNELS = []
 
     def __init__(
         self, ircbot, cache_time=datetime.timedelta(hours=1),
@@ -35,6 +36,10 @@ class IfINews(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg == "!ifi":
             self.ircbot.switch_personality(nick="chiefsec")

@@ -43,14 +43,18 @@ class IRCBot(IRCClient):
     irc bot that can be extended by plugins
     """
     def __init__(
-        self, server, port, nick, channel, realname,
+        self, server, port, nick, channels, realname,
         no_message_logging=[]
     ):
         log.debug("Connecting to %s:%s ..." % (server, port))
         IRCClient.__init__(self, server, port, no_message_logging)
 
         self.nickname              = nick
-        self.channel               = channel
+        if isinstance(channels, str):
+            self.channels          = [channels,]
+        else:
+            self.channels = channels
+
         self.trigger_once_commands = []
         self.shutdown_trigger_once = False
 
@@ -60,7 +64,6 @@ class IRCBot(IRCClient):
 
         #get all enabled plugins
         self.plugins   = []
-        self.help_text = ""
         for plugin in get_plugins():
             if plugin.ENABLED:
                 #init enabled plugins
@@ -68,9 +71,6 @@ class IRCBot(IRCClient):
                 self.plugins.append(plugin(self))
                 self.plugins[-1].on_init()
 
-                #add help text for overall help of the bot
-                if self.plugins[-1].HELP:
-                    self.help_text += "%s\n" % self.plugins[-1].HELP
             else:
                 log.debug("Skipping disabled plugin '%s'..." % plugin)
 
@@ -84,16 +84,18 @@ class IRCBot(IRCClient):
 
         #handle incoming messages
         if cmd == RPL_ENDOFMOTD:
-            #join the channel after receiving MOTD
-            self.join(self.channel)
-            #random greeting
-            self.privmsg(self.channel, random.choice(GREETINGS))
+            #join all channels after receiving MOTD
+            for channel in self.channels:
+                self.join(channel)
 
-            #trigger once commands to itself
-            for trigger_cmd in self.trigger_once_commands:
-                self.handle_message(
-                    prefix, trigger_cmd, "PRIVMSG", self.channel
-                )
+                #random greeting
+                self.privmsg(channel, random.choice(GREETINGS))
+
+                #trigger once commands to itself
+                for trigger_cmd in self.trigger_once_commands:
+                    self.handle_message(
+                        channel, trigger_cmd, "PRIVMSG", channel
+                    )
 
             if self.shutdown_trigger_once:
                 #if shutdown_trigger_once flag is set, shutdown the bot
@@ -103,7 +105,7 @@ class IRCBot(IRCClient):
                     "'shutdown_trigger_once' flag is set."
                 )
                 self.shutdown()
-            
+
             #start random message timer for each plugins
             for plugin in self.plugins:
                 plugin.start_random_message_timer()
@@ -123,8 +125,18 @@ class IRCBot(IRCClient):
             if tail == "!help":
                 #return help for all enabled plugins
                 self.switch_personality("lilhelper")
+
+                #add help text for overall help of the bot
+                help_text = ""
+                for plugin in self.plugins:
+                    if (
+                        plugin.HELP and plugin.is_in_channel(args[0])
+                    ):
+                        #add help text for plugins
+                        help_text += "%s\n" % plugin.HELP
+
                 self.privmsg(
-                    self.channel, "--- help---\n%s" % self.help_text
+                    args[0], "--- help---\n%s" % help_text
                 )
                 self.reset_personality()
 
@@ -153,7 +165,8 @@ class IRCBot(IRCClient):
                 log.exception("Could not handle message: %s" % e)
 
         #send farewell message
-        self.privmsg(self.channel, random.choice(FAREWELLS))
+        for channel in self.channels:
+            self.privmsg(channel, random.choice(FAREWELLS))
 
         #quit from server
         self.quit()
@@ -192,7 +205,8 @@ def main():
         '--realname', help='realname of bot', default='Stan Marsh'
     )
     parser.add_argument(
-        '--channel', help='channel to join', default='#goesec'
+        '--channel', help='channel to join', default=["#goesec"],
+        action='append'
     )
     parser.add_argument(
         '--server', help='name of irc server',
@@ -209,8 +223,12 @@ def main():
 
     #parse command line arguments
     args = parser.parse_args()
-    if not args.channel.startswith("#"):
-        args.channel = "#" + args.channel
+
+    #add missing '#' to channels
+    channels = []
+    for ch in args.channel:
+        if not ch.startswith("#"):
+            channels.append("#" + ch)
 
     log.debug(
         "Starting '%s' python-based IRC bot V%d.%d.%d" % (
@@ -219,7 +237,7 @@ def main():
     )
     #create the irc bot
     ircb = IRCBot(
-        args.server, args.port, args.nick, args.channel, args.realname,
+        args.server, args.port, args.nick, channels, args.realname,
         no_message_logging=[RPL_MOTD]
     )
 

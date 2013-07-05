@@ -13,14 +13,15 @@ class Static(Plugin):
     """
     class for sending a bahn durchsage
     """
-    NAME    = "Durchsage"
-    AUTHOR  = "konrad.rieck@uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = ""
+    NAME     = "Durchsage"
+    AUTHOR   = "konrad.rieck@uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = ""
+    CHANNELS = []
 
     def __init__(
-        self, ircbot, cache_time=None, 
+        self, ircbot, cache_time=None,
         random_message=[4 * 60 * 60, 12 * 60 * 60] # between 3 h and 9 h
     ):
         Plugin.__init__(self, ircbot, cache_time, random_message)
@@ -51,7 +52,7 @@ class Static(Plugin):
     def get_reason(self):
         reasons = open('plugins/durchsage_g.txt').read().splitlines()
         return random.choice(reasons).strip()
-    
+
     def durchsage(self):
         (x,y) = self.get_cities()
 
@@ -67,20 +68,28 @@ class Static(Plugin):
                    "heute circa %d Minuten später. %s." % \
                    (self.get_train(), x, y, self.get_time(), \
                     self.get_delay(), self.get_reason())
-                            
+
         # Make action
         text = "\x01ACTION " + text + "\x01"
         return text
 
+
     def on_random_message(self):
-        self.ircbot.privmsg(self.ircbot.channel, self.durchsage())
+        for channel in self.ircbot.channels:
+            if self.is_in_channel(channel):
+                self.ircbot.privmsg(self.ircbot.channel, self.durchsage())
         self.start_random_message_timer()
+
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
 
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
+
         if msg == "!durchsage":
             self.ircbot.privmsg(params[0], self.durchsage())
-            
+
         if "bahn" in msg and random.random() < 0.5:
             self.ircbot.privmsg(params[0], self.durchsage())

@@ -14,16 +14,17 @@ URL = "http://mobil.tvmovie.de/page%d.rbml"
 
 class Fernsehen(Plugin):
     """ class to parse fernsehen data """
-    NAME    = "Fernsehen"
-    AUTHOR  = "konrad.rieck@uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = "!fernsehen  current tv shows\n" \
-              "!fernsehen+gleich  following tv shows\n" \
-              "!fernsehen+20:15  tv shows at 20:15\n" \
-              "!fernsehen+22:00  tv shows at 22:00\n" \
-              "!fernsehen+tipp  today's best tv shows\n" \
-              "!fernsehen+filme  today's best movies" \
+    NAME     = "Fernsehen"
+    AUTHOR   = "konrad.rieck@uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = "!fernsehen  current tv shows\n" \
+               "!fernsehen+gleich  following tv shows\n" \
+               "!fernsehen+20:15  tv shows at 20:15\n" \
+               "!fernsehen+22:00  tv shows at 22:00\n" \
+                "!fernsehen+tipp  today's best tv shows\n" \
+               "!fernsehen+filme  today's best movies"
+    CHANNELS = []
 
 
     def __init__(
@@ -35,6 +36,10 @@ class Fernsehen(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg.startswith("!fernsehen"):
             self.ircbot.switch_personality(nick="glotze")

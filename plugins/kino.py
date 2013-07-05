@@ -14,12 +14,12 @@ URL = "http://www.kino.de/kinoprogramm/goettingen"
 
 class Kino(Plugin):
     """ class to parse kino data """
-    NAME    = "Kino"
-    AUTHOR  = "konrad.rieck@uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = "!kino  today's movies in the cinemaxx"
-
+    NAME     = "Kino"
+    AUTHOR   = "konrad.rieck@uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = "!kino  today's movies in the cinemaxx"
+    CHANNELS = []
 
     def __init__(
         self, ircbot, cache_time=datetime.timedelta(hours=1),
@@ -29,6 +29,10 @@ class Kino(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg.startswith("!kino"):
             self.ircbot.switch_personality(nick="popcorn")

@@ -17,13 +17,14 @@ class Wetter(Plugin):
     """
     class to parse the weather of wetter.com mobile webpage
     """
-    NAME    = "Wetter"
-    AUTHOR  = "kellner@cs.uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = "!wetter  current weather forecast\n" \
-              "!wetter+1  weather forecast for tomorrow\n" \
-              "!wetter+2  weather forecast for the day after tomorrow"
+    NAME     = "Wetter"
+    AUTHOR   = "kellner@cs.uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = "!wetter  current weather forecast\n" \
+               "!wetter+1  weather forecast for tomorrow\n" \
+               "!wetter+2  weather forecast for the day after tomorrow"
+    CHANNELS = []
 
     def __init__(
         self, ircbot, cache_time=datetime.timedelta(hours=1),
@@ -34,6 +35,10 @@ class Wetter(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg.startswith("!wetter"):
             #get data from cache
@@ -132,7 +137,7 @@ class Wetter(Plugin):
         for item in ("morgens", "mittags", "abends", "nachts"):
             if item not in self.days[today]:
                 continue
-            
+
             tmp += "%s:\n  %s, %s (%s), %s\n" % (
                 item,
                 self.days[today][item]["degree"],

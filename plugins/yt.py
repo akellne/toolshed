@@ -18,11 +18,12 @@ class YouTube(Plugin):
     """
     class to parse youtube feeds
     """
-    NAME    = "Youtube"
-    AUTHOR  = "kellner@cs.uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = "!yt  get random youtube link"
+    NAME     = "Youtube"
+    AUTHOR   = "kellner@cs.uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = "!yt  get random youtube link"
+    CHANNELS = ["#mlsec"]
 
     def __init__(
         self, ircbot, cache_time=datetime.timedelta(days=1),
@@ -38,6 +39,10 @@ class YouTube(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg == "!yt":
             self.ircbot.switch_personality(nick="ytroulet")

@@ -25,24 +25,33 @@ class Plugin(object):
     ircbot          is the ircbot that can be used by the plugin for the
                     communication with the irc network
     cache_time      should be a datetime.timedelta that specifies from which
-                    point in time the cache of the plugin is marked for 
+                    point in time the cache of the plugin is marked for
                     reloading
     random_message  is an interval in which random messages should be sent
                     the interval unit is seconds so the values must be given
-                    as floats. 
+                    as floats.
     """
-    NAME    = ""
-    AUTHOR  = ""
-    VERSION = (0, 0, 0)
-    ENABLED = False
-    HELP    = ""
-    def __init__(self, ircbot, cache_time=None, random_message=[None, None]):
+    NAME     = ""
+    AUTHOR   = ""
+    VERSION  = (0, 0, 0)
+    ENABLED  = False
+    HELP     = ""
+    CHANNELS = []  #empty list means, active for all channels
+
+    def __init__(
+        self, ircbot, cache_time=None, random_message=[None, None]
+    ):
         #setup plugin logger
         self.log = logging.getLogger(
             "plugin '%s (%s)':" % (self.NAME, self.get_version())
         )
 
         self.log.debug("Init with cache_time '%s'" % cache_time)
+        self.log.debug(
+            "Plugin is activated for channels: %s" % (
+                ", ".join(self.CHANNELS)
+            )
+        )
 
         #ircbot that is used for information exchange
         self.ircbot = ircbot
@@ -57,7 +66,7 @@ class Plugin(object):
 
         #interval in which random messages should be sent
         self.random_message = random_message
-        
+
         #random message timer (later used as pointer to the threading.Timer)
         self.timer = None
 
@@ -87,7 +96,7 @@ class Plugin(object):
         called on quitting of the plugin
         """
         self.log.debug("Quitting plugin")
-        
+
         if self.timer:
             #cancel timer and destroy on random message calls
             #to avoid another execution of the timer
@@ -194,6 +203,15 @@ class Plugin(object):
         self.log.debug("Storing data to cache: %s" % str(data))
         with codecs.open(self.cache_file, "w", "utf-8" ) as f:
             f.write(json.dumps(data))
+
+
+    def is_in_channel(self, channel):
+        """
+        returns True, if plugin is in channel
+        """
+        return (
+            (channel in self.CHANNELS) or (self.CHANNELS == [])
+        )
 
 
     def __str__(self):

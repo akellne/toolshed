@@ -18,11 +18,12 @@ class Mensa(Plugin):
     """
     class to parse the mensa plan
     """
-    NAME    = "Mensa Plan"
-    AUTHOR  = "kellner@cs.uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = "!mensa  today's dishes in the nord mensa"
+    NAME     = "Mensa Plan"
+    AUTHOR   = "kellner@cs.uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = "!mensa  today's dishes in the nord mensa"
+    CHANNELS = []
 
     def __init__(
         self, ircbot, cache_time=datetime.timedelta(days=1),
@@ -43,6 +44,10 @@ class Mensa(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg == "!mensa":
             self.ircbot.switch_personality("souschef")

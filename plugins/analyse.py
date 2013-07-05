@@ -16,11 +16,12 @@ class Analyse(Plugin):
     """
     class to analyse the current irc
     """
-    NAME    = "Analyse"
-    AUTHOR  = "kellner@cs.uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = "!analyse  shows the analyse of the irc"
+    NAME     = "Analyse"
+    AUTHOR   = "kellner@cs.uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = "!analyse  shows the analyse of the irc"
+    CHANNELS = []
 
     def __init__(
         self, ircbot, cache_time=datetime.timedelta(days=1),
@@ -67,6 +68,10 @@ class Analyse(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg in ("!analyse", "!analyze", "!sentiment"):
             #react to command

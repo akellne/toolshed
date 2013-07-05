@@ -48,20 +48,25 @@ class Static(Plugin):
     class for some static answering of questions
     => on triggering a known command a random message is generated
     """
-    NAME    = "Static Messages"
-    AUTHOR  = "kellner@cs.uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = ""
+    NAME     = "Static Messages"
+    AUTHOR   = "kellner@cs.uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = ""
+    CHANNELS = []
 
     def __init__(
         self, ircbot, cache_time=None, random_message=[None, None]
     ):
         Plugin.__init__(self, ircbot, cache_time, random_message)
 
-    
+
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg in STATIC_MESSAGES:
             #finally, send the message with the

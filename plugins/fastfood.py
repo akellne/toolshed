@@ -18,11 +18,12 @@ class FastFood(Plugin):
     """
     class to parse some fastfood webpages
     """
-    NAME    = "Fastfood"
-    AUTHOR  = "kellner@cs.uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = "!fastfood  display the king of the month"
+    NAME     = "Fastfood"
+    AUTHOR   = "kellner@cs.uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = "!fastfood  display the king of the month"
+    CHANNELS = []
 
     def __init__(
         self, ircbot, cache_time=datetime.timedelta(days=1),
@@ -33,6 +34,10 @@ class FastFood(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg == "!fastfood":
             #get data from cache

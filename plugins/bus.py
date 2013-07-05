@@ -14,15 +14,16 @@ URL = "http://www.fahrplaner.de/hafas/stboard.exe/dn?input=1190951&maxJourneys=5
 
 class Bus(Plugin):
     """ class to parse bus data from fahrplaner.de """
-    NAME    = "Bus"
-    AUTHOR  = "konrad.rieck@uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = "!bus  current timetable for the bus stop at " \
+    NAME     = "Bus"
+    AUTHOR   = "konrad.rieck@uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = "!bus  current timetable for the bus stop at " \
               "Goldschmidtstraße"
+    CHANNELS = []
 
     def __init__(
-        self, ircbot, cache_time=datetime.timedelta(hours=1), 
+        self, ircbot, cache_time=datetime.timedelta(hours=1),
         random_message=[None, None]
     ):
         Plugin.__init__(self, ircbot, cache_time, random_message)
@@ -30,6 +31,10 @@ class Bus(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg.startswith("!bus"):
             self.ircbot.switch_personality(nick="busfahrer")

@@ -19,12 +19,13 @@ class Bahn(Plugin):
     """
     class to parse the train connections from bahn mobile
     """
-    NAME    = "Bahn"
-    AUTHOR  = "kellner@cs.uni-goettingen.de"
-    VERSION = (0, 0, 1)
-    ENABLED = True
-    HELP    = "!bahn+berlin    display next trains to Berlin\n" \
-              "!bahn+hannover  display next trains to Hannover"
+    NAME     = "Bahn"
+    AUTHOR   = "kellner@cs.uni-goettingen.de"
+    VERSION  = (0, 0, 1)
+    ENABLED  = True
+    HELP     = "!bahn+berlin    display next trains to Berlin\n" \
+               "!bahn+hannover  display next trains to Hannover"
+    CHANNELS = []
 
 
     def __init__(
@@ -36,6 +37,10 @@ class Bahn(Plugin):
 
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
+
+        if not self.is_in_channel(params[0]):
+            #plugin not available in the channel => return
+            return
 
         if msg.startswith("!bahn"):
             self.ircbot.switch_personality(nick="DB")
