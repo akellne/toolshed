@@ -29,11 +29,11 @@ class Static(Plugin):
     def get_train(self):
         r = random.random()
         if r < 0.33:
-            return "RE %5d" % random.randint(10000,100000)
+            return "RE %5d" % random.randint(10000,99999)
         elif r < 0.66:
-            return "IC %4d" % random.randint(1000,10000)
+            return "IC %4d" % random.randint(1000,9999)
         else:
-            return "ICE %3d" % random.randint(100,1000)
+            return "ICE %3d" % random.randint(100,999)
 
     def get_delay(self):
         mins = [5, 10, 15, 20, 30, 40, 45, 60, 90, 120]
@@ -47,7 +47,7 @@ class Static(Plugin):
         return (x,y)
 
     def get_time(self):
-        return '%d:%.2d' % (random.randint(0,24), random.randint(0,60))
+        return '%d:%.2d' % (random.randint(0,23), random.randint(0,59))
 
     def get_reason(self):
         reasons = open('plugins/durchsage_g.txt').read().splitlines()
@@ -58,7 +58,7 @@ class Static(Plugin):
 
         r = random.random()
         if r < 0.05:
-            text = "Vorsicht an Gleis %d, ein Zug fährt durch!" % random.randint(1,10)
+            text = "Vorsicht an Gleis %d, ein Zug fährt durch!" % random.randint(1,9)
         elif r < 0.10:
             text = "Information zu %s, nach %s über %s, Abfahrt %s, " \
                    "heute in umgekehrter Wagenreihung." % \
