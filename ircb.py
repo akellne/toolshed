@@ -86,7 +86,8 @@ class IRCBot(IRCClient):
         if cmd == RPL_ENDOFMOTD:
             #join all channels after receiving MOTD
             for channel in self.channels:
-                self.join(channel)
+                channel,_,key = channel.partition(':')
+                self.join(channel, key)
 
                 #random greeting
                 self.privmsg(channel, random.choice(GREETINGS))
@@ -205,7 +206,7 @@ def main():
         '--realname', help='realname of bot', default='Stan Marsh'
     )
     parser.add_argument(
-        '--channel', help='channel to join', default=["#goesec"],
+        '--channel', help='channel[:key] to join', default=["mlsec:elefantastisch", "goesec"],
         action='append'
     )
     parser.add_argument(

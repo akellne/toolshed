@@ -388,8 +388,11 @@ class IRCClient(asynchat.async_chat):
     def quit(self, message=""):
         self.send_data("QUIT %s" % message)
 
-    def join(self, channel):
-        self.send_data("JOIN %s" % channel)
+    def join(self, channel, key = None):
+        if key:
+            self.send_data("JOIN %s %s" % (channel, key))
+        else:
+            self.send_data("JOIN %s" % channel)
 
     def part(self, channel):
         self.send_data("PART %s" % channel)
