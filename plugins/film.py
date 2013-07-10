@@ -20,7 +20,7 @@ class Film(Plugin):
     AUTHOR   = "konrad.rieck@uni-goettingen.de"
     VERSION  = (0, 0, 1)
     ENABLED  = True
-    HELP     = "!film  return entry from movie lexicon"
+    HELP     = "!film  return description from filmlexikon"
     CHANNELS = []
 
     def __init__(
@@ -37,8 +37,8 @@ class Film(Plugin):
             return
 
         if msg.startswith("!film"):
-            self.ircbot.switch_personality(nick="critic")
-            title = msg.split(' ')[1:]
+            self.ircbot.switch_personality(nick="flexi")
+            title = ' '.join(msg.split(' ')[1:])
             message = self.get_film(title)
             self.ircbot.privmsg(params[0], message)
             self.ircbot.reset_personality()
@@ -46,29 +46,46 @@ class Film(Plugin):
     def get_film(self, title):
         """ load results from kabeleins.de """
 
+        title = title.lower()
         try:            
             root = lxml.html.parse(URL + urllib.quote(title))
             link = root.xpath('//a[@class="linkstyle"]')
+            link = filter(lambda x: len(x.xpath('string()')) > 3, link)
             
             if len(link) == 0:
                 tmp = "Den Film kenne ich nicht!" 
+                return tmp.strip()
+
+            idx = 0
+            exact = False
+            for (i,l) in enumerate(link):
+                x = l.xpath('string()').lower()
+                if x.strip() == title.strip():
+                    idx = i
+                    exact = True
+
+            if not exact and len(link) > 1:
+                tmp = "Ich kenne folgende Filme:\n"
+                for l in link:
+                    tmp += "  %s\n" % l.xpath('string()')
             else:
-                root = lxml.html.parse(MAIN_URL + link[-1].get('href'))
+                root = lxml.html.parse(MAIN_URL + link[idx].get('href'))
                 entry = root.xpath('//div[@class="filmlexikon-db-ausgabe"]')[0]
                 lines = entry.xpath('string()').split('\n')
+                lines = map(lambda x: x.strip().encode("utf-8"), lines)
 
                 # Get name
-                name = entry.getchildren()[0].text
-                idx = lines.index('Land, Jahr: ')
+                name = entry.getchildren()[0].text.encode("utf-8")
+                idx = lines.index('Land, Jahr:')
                 year = lines[idx+1]
                 tmp = "--- %s (%s) ---\n" % (name, year)
 
                 # Get description
-                idx = lines.index('Filmkritik:')
-                tmp += lines[idx+1]
+                idx = lines.index('Filmkritik:') 
+                tmp += lines[idx+1].replace('. ', '.\n')
             
         except:
             tmp = "Keine Ahnung. Mein Parser ist kaputt!"
         finally:
-            return tmp.strip().encode("utf-8")
+            return tmp.strip()
 
