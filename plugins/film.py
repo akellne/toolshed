@@ -84,7 +84,8 @@ class Film(Plugin):
                 idx = lines.index('Filmkritik:') 
                 tmp += lines[idx+1].replace('. ', '.\n')
             
-        except:
+        except Exception,e: 
+            print str(e)
             tmp = "Keine Ahnung. Mein Parser ist kaputt!"
         finally:
             return tmp.strip()
