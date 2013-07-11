@@ -206,7 +206,7 @@ def main():
         '--realname', help='realname of bot', default='Stan Marsh'
     )
     parser.add_argument(
-        '--channel', help='channel[:key] to join', default=["mlsec:elefantastisch", "goesec"],
+        '--channel', help='channel[:key] to join', default=["mlsec:elefantastisch"],
         action='append'
     )
     parser.add_argument(

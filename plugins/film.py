@@ -37,11 +37,9 @@ class Film(Plugin):
             return
 
         if msg.startswith("!film"):
-            self.ircbot.switch_personality(nick="flexi")
             title = ' '.join(msg.split(' ')[1:])
             message = self.get_film(title)
             self.ircbot.privmsg(params[0], message)
-            self.ircbot.reset_personality()
 
     def get_film(self, title):
         """ load results from kabeleins.de """
@@ -67,7 +65,7 @@ class Film(Plugin):
             if not exact and len(link) > 1:
                 tmp = "Ich kenne folgende Filme:\n"
                 for l in link:
-                    tmp += "  %s\n" % l.xpath('string()')
+                    tmp += "  %s\n" % l.xpath('string()').encode("utf-8")
             else:
                 root = lxml.html.parse(MAIN_URL + link[idx].get('href'))
                 entry = root.xpath('//div[@class="filmlexikon-db-ausgabe"]')[0]
@@ -85,7 +83,7 @@ class Film(Plugin):
                 tmp += lines[idx+1].replace('. ', '.\n')
             
         except Exception,e: 
-            print str(e)
+            self.log.debug(str(e))
             tmp = "Keine Ahnung. Mein Parser ist kaputt!"
         finally:
             return tmp.strip()
