@@ -13,8 +13,13 @@ from base import Plugin
 #URL to the ifi news ics file
 URL = "http://filepool.informatik.uni-goettingen.de/gcms/ifi/news/ifi_cal.php"
 
-#dateformat used in ics files
+#dateformat used in ics files (date with and without time)
 ICS_UTC="%Y%m%dT%H%M%SZ"
+ICS_DATE="%Y%m%d"
+
+#hours that needs to be shifted for correct times of ics files
+TIME_SHIFT = datetime.timedelta(hours=2)
+
 
 class IfINews(Plugin):
     """
@@ -79,26 +84,51 @@ class IfINews(Plugin):
             item = {}
             for line in res.split("\n"):
                 if line.strip():
+                    #replace stuff for all day events that use another format
+                    for x in ("DTSTART", "DTEND"):
+                        line = line.replace(
+                            "%s;VALUE=DATE" % x,
+                            "%s" % x 
+                        )
+
                     k, _, v = line.partition(":")
                     if k in ("SUMMARY", "DTSTART", "DTEND"):
                         if k == "SUMMARY":
                             item[k.lower()] = v.strip()
                         else:
-                            item[k.lower()] = datetime.datetime.strptime(
-                                v.strip(), ICS_UTC
-                            )
+                            try:
+                                #try to parse date and time
+                                item[k.lower()] = datetime.datetime.strptime(
+                                    v.strip(), ICS_UTC
+                                ) + TIME_SHIFT
+                                item["onlydate"] = False
+                            except Exception:
+                                try:
+                                    #try to parse only date
+                                    item[k.lower()] = datetime.datetime.strptime(
+                                        v.strip(), ICS_DATE
+                                    )
+                                    item["onlydate"] = True
+                                except Exception:
+                                    pass
 
             li.append(item)
 
         #build message
         tmp = ""
         for item in sorted(li, key=lambda item: item["dtstart"]):
-            if item["dtstart"] >= datetime.datetime.now():
-                tmp += "%sh to %sh:  %s\n" % (
-                    item["dtstart"].strftime("%a %d. %b %Y, %H:%M"),
-                    item["dtend"].strftime("%H:%M"),
-                    item["summary"].replace("\\", "")
-                )
+            if item["dtstart"] >= datetime.datetime.today():
+                if not item["onlydate"]:
+                    tmp += "%sh to %sh:  %s\n" % (
+                        item["dtstart"].strftime("%a %d. %b %Y, %H:%M"),
+                        item["dtend"].strftime("%H:%M"),
+                        item["summary"].replace("\\", "")
+                    )
+                else:
+                    tmp += "%sh %s\n" % (
+                        item["dtstart"].strftime("%a %d. %b %Y"),
+                        item["summary"].replace("\\", "")
+                    )
 
         return tmp.encode("utf-8")
 
