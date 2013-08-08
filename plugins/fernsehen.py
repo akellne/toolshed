@@ -17,7 +17,7 @@ class Fernsehen(Plugin):
     NAME     = "Fernsehen"
     AUTHOR   = "konrad.rieck@uni-goettingen.de"
     VERSION  = (0, 0, 1)
-    ENABLED  = True
+    ENABLED  = False
     HELP     = "!fernsehen  current tv shows\n" \
                "!fernsehen+gleich  following tv shows\n" \
                "!fernsehen+20:15  tv shows at 20:15\n" \
