@@ -57,9 +57,9 @@ class Static(Plugin):
         (x,y) = self.get_cities()
 
         r = random.random()
-        if r < 0.05:
+        if r < 0.10:
             text = "Vorsicht an Gleis %d, ein Zug fährt durch!" % random.randint(1,9)
-        elif r < 0.10:
+        elif r < 0.20:
             text = "Information zu %s, nach %s über %s, Abfahrt %s, " \
                    "heute in umgekehrter Wagenreihung." % \
                    (self.get_train(), x, y, self.get_time())

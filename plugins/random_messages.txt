@@ -1,18 +1,3 @@
-!bahn+berlin
-!bahn+hannover
-!bundesliga
-!bus
-!fastfood
-!fernsehen
-!fernsehen+filme
-!fernsehen+tipp
-!ifi
-!kino
-!mensa
-!stau
-!wetter
-!wetter+1
-!wetter+2
 *hust*
 *pups*
 *zzz*
@@ -122,13 +107,19 @@ Ya no temes morir, por eso eres un enemigo peligroso.
 You learn about loss.
 You're only as healthy as you feel.
 dU nIcht CaSanova im BeTt?
+droopy: kennst du mich noch?
 droopy: na... alles roger bei dir
 droopy: sag mal was schlaues!
 droopy: und noch was vor?
 droopy: was geht?
+droopy: was ist mit screwy los?
 droopy: was laeuft?
+droopy: weck mal screwy auf
 langeweilig!
 screwy: alter socke, was geht...
+screwy: du bist echt langweilig
 screwy: geht ganz gut, oder?
+screwy: hast du ein problem mit droopy?
 screwy: langweilig hier, oder?
 screwy: was los?
+screwy: was meint droopy dazu?
