@@ -20,9 +20,10 @@ class Mensa(Plugin):
     """
     NAME     = "Mensa Plan"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
-    VERSION  = (0, 0, 1)
+    VERSION  = (0, 0, 2)
     ENABLED  = True
-    HELP     = "!mensa  today's dishes in the nord mensa"
+    HELP     = "!mensa   today's dishes in the nord mensa\n" \
+               "!mensa+1 tomorrow's dishes in the nord mensa"
     CHANNELS = []
 
     def __init__(
@@ -49,7 +50,7 @@ class Mensa(Plugin):
             #plugin not available in the channel => return
             return
 
-        if msg == "!mensa":
+        if msg in ("!mensa", "!mensa+1"):
             self.ircbot.switch_personality("souschef")
 
             #get data from cache
@@ -58,16 +59,19 @@ class Mensa(Plugin):
                 #reload the data, if too old
                 self.days = self._get_dishes()
                 self.save_cache(data=self.days)
-
-            message = self._get_today()
-            if not message:
+            
+            if msg == "!mensa":
+                message = self._get_today()
+                if message:
+                    message = message.replace("DAY", "heute")
+                else:        
+                    message = "Die Küche hat heute bereits geschlossen."
+            elif msg == "!mensa+1":
                 message = self._get_tomorrow()
-                if not message:
-                    message = "Die Küche hat geschlossen."
-                else:
+                if message:
                     message = message.replace("DAY", "morgen")
-            else:
-                message = message.replace("DAY", "heute")
+                else:
+                    message = "Die Küche hat morgen geschlossen."
 
             #finally, send the message with the
             self.ircbot.privmsg(params[0], message)

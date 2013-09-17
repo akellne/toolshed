@@ -23,10 +23,10 @@ class YouTube(Plugin):
     VERSION  = (0, 0, 1)
     ENABLED  = True
     HELP     = "!yt  get random youtube link"
-    CHANNELS = ["#mlsec"]
+    CHANNELS = ["#mlsec", "#frickel3"]
 
     def __init__(
-        self, ircbot, cache_time=datetime.timedelta(days=1),
+        self, ircbot, cache_time=datetime.timedelta(days=365*10),
         random_message=[None, None]
     ):
         Plugin.__init__(self, ircbot, cache_time, random_message)
@@ -78,21 +78,27 @@ class YouTube(Plugin):
         """
         get information about youtube url
         """
-        try:
+        
+        #NOTE: this part is not working anymore as the funny guys
+        #      from yt have now hidden their comments section in
+        #      some obscured html page that seems to be loading
+        #      things via ajax in the background
+
+        #try:
             #load url and parse it with html parser
             #hack via urllib2 to set timeout
-            html = urllib2.urlopen(url, timeout=60)
-            root =  lxml.html.fromstring(html.read())
-
+        #    html = urllib2.urlopen(url, timeout=60)
+        #    root = lxml.html.fromstring(html.read())
             #get relevant part
-            comments = root.xpath(
-                "//div[@class='comment-text']/p/text()"
-            )
-
-        except IOError, e:
-            print "====>", e
-            comments = None
-
+        #    comments = [
+        #        comment.text_content()
+        #        for comment in root.xpath("//div[@class='comment-text']")
+        #    ]
+            
+        #except IOError, e:
+        #    print "====>", e
+        #    comments = None
+        
         return {
             "comments" : comments
         }

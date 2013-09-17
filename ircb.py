@@ -15,7 +15,7 @@ from utils.ircclient import IRCClient, ERR_NICKNAMEINUSE, RPL_MOTD, \
 from plugins import get_plugins
 
 #name and version of the bot
-NAME = "ircb"
+NAME    = "ircb"
 VERSION = (0, 0, 2)
 
 #setup logger for the ircbot
@@ -50,11 +50,7 @@ class IRCBot(IRCClient):
         IRCClient.__init__(self, server, port, no_message_logging)
 
         self.nickname              = nick
-        if isinstance(channels, str):
-            self.channels          = [channels,]
-        else:
-            self.channels = channels
-
+        self.channels              = channels
         self.trigger_once_commands = []
         self.shutdown_trigger_once = False
 
@@ -73,7 +69,6 @@ class IRCBot(IRCClient):
 
             else:
                 log.debug("Skipping disabled plugin '%s'..." % plugin)
-
 
 
     def handle_message(self, prefix, tail, cmd, *args):
@@ -206,8 +201,9 @@ def main():
         '--realname', help='realname of bot', default='Stan Marsh'
     )
     parser.add_argument(
-        '--channel', help='channel[:key] to join', default=["mlsec:elefantastisch", "goesec"],
-        action='append'
+        '--channel', help='channel[:key] to join', 
+        default=["mlsec:elefantastisch", "goesec"],
+#        action='append'
     )
     parser.add_argument(
         '--server', help='name of irc server',
@@ -225,11 +221,18 @@ def main():
     #parse command line arguments
     args = parser.parse_args()
 
+    #convert channels to list
+    if isinstance(args.channel, str):
+        args_channels = [args.channel,]
+    else:
+        args_channels = args.channel
+
     #add missing '#' to channels
     channels = []
-    for ch in args.channel:
+    for ch in args_channels:
         if not ch.startswith("#"):
-            channels.append("#" + ch)
+           ch = "#%s" % ch
+        channels.append(ch)
 
     log.debug(
         "Starting '%s' python-based IRC bot V%d.%d.%d" % (
