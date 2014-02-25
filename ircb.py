@@ -85,7 +85,8 @@ class IRCBot(IRCClient):
                 self.join(channel, key)
 
                 #random greeting
-                self.privmsg(channel, random.choice(GREETINGS))
+                if (random.random() > 0.66):
+                    self.privmsg(channel, random.choice(GREETINGS))
 
                 #trigger once commands to itself
                 for trigger_cmd in self.trigger_once_commands:
@@ -162,7 +163,8 @@ class IRCBot(IRCClient):
 
         #send farewell message
         for channel in self.channels:
-            self.privmsg(channel, random.choice(FAREWELLS))
+            if (random.random() > 0.66):
+                self.privmsg(channel, random.choice(FAREWELLS))
 
         #quit from server
         self.quit()
