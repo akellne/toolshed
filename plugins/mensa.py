@@ -94,7 +94,8 @@ class Mensa(Plugin):
         for x in el.findall("div[@class='speise-tblhead']"):
             #get date
             dt = datetime.datetime.strptime(
-                x.text, "%A, %d. %B %Y"
+                x.text.encode("latin1"), 
+                "%A, %d. %B %Y"
             ).strftime("%Y%m%d")
 
             if dt not in days:
