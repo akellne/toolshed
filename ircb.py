@@ -211,7 +211,10 @@ def get_default_config():
         config.set("defaults", "commands", "")
         with open(CONFIG_FILE, "wb") as f:
             config.write(f)
-
+        log.info(
+            "Create new config file '%s'. Please set " \
+            "your defaults in this file." % CONFIG_FILE
+        )
     config.read(CONFIG_FILE)
 
     return config
