@@ -10,6 +10,7 @@ notes
     * for security reasons the bot plugins should not allow arbitrary user
       input, i.e. only direct mapping of pre-defined parameter to results
       should be used
-
+    * the default configuration is read from ~/.toolshedrc, which is used
+      in case of no arguments given on start
 
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 import asyncore
 import datetime
@@ -9,6 +10,7 @@ import logging
 import random
 import signal
 import argparse
+import ConfigParser
 
 from utils.ircclient import IRCClient, ERR_NICKNAMEINUSE, RPL_MOTD, \
     RPL_ENDOFMOTD
@@ -16,7 +18,10 @@ from plugins import get_plugins
 
 #name and version of the bot
 NAME    = "ircb"
-VERSION = (0, 0, 2)
+VERSION = (0, 0, 3)
+
+#config file
+CONFIG_FILE = os.path.expanduser('~/.toolshedrc')
 
 #setup logger for the ircbot
 logging.basicConfig(level=logging.DEBUG)
@@ -190,34 +195,61 @@ class IRCBot(IRCClient):
         self.trigger_once_commands = cmds.split(",")
 
 
+def get_default_config():
+    """
+    returns the default configuration
+    """
+    #get default config from corresponding file
+    config = ConfigParser.RawConfigParser()
+    if not os.path.exists(CONFIG_FILE):
+        #create new config file, if not existing yet
+        config.add_section("defaults")
+        config.set("defaults", "nick", "toolshed")
+        config.set("defaults", "realname", "Stan Marsh")
+        config.set("defaults", "channels", "")
+        config.set("defaults", "server", "irc.servercentral.net:6667")
+        config.set("defaults", "commands", "")
+        with open(CONFIG_FILE, "wb") as f:
+            config.write(f)
+
+    config.read(CONFIG_FILE)
+
+    return config
+
+
+
 def main():
+    #read default config
+    config = get_default_config()
+
     # command line arguments and default values
     parser = argparse.ArgumentParser(
         description='Python-based IRC Bot.',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument(
-        '--nick', help='nickname of bot', default='toolshed'
+        '--nick', help='nickname of bot',
+        default=config.get("defaults", "nick")
     )
     parser.add_argument(
-        '--realname', help='realname of bot', default='Stan Marsh'
+        '--realname', help='realname of bot',
+        default=config.get("defaults", "realname")
     )
     parser.add_argument(
-        '--channel', help='channel[:key] to join', 
-        default=["mlsec:elefantastisch", "goesec"],
-#        action='append'
+        '--channel', help='channel[:key] to join',
+        default=config.get("defaults", "channels").split(",")
     )
     parser.add_argument(
         '--server', help='name of irc server',
-        default='irc.servercentral.net'
+        default=config.get("defaults", "server").split(":")[0]
     )
     parser.add_argument(
-        '--port', help='port of irc server',
-        type=int, default=6667
+        '--port', help='port of irc server', type=int,
+        default=config.get("defaults", "server").split(":")[1]
     )
     parser.add_argument(
         '--commands', help='irc commands separated by , (note: use \!)',
-        default=""
+        default=config.get("defaults", "commands")
     )
 
     #parse command line arguments
