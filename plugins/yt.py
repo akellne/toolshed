@@ -23,7 +23,7 @@ class YouTube(Plugin):
     VERSION  = (0, 0, 1)
     ENABLED  = True
     HELP     = "!yt  get random youtube link"
-    CHANNELS = ["#mlsec", "#frickel3"]
+    CHANNELS = ["#mlsec", "#frickel"]
 
     def __init__(
         self, ircbot, cache_time=datetime.timedelta(days=365*10),

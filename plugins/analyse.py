@@ -20,7 +20,7 @@ class Analyse(Plugin):
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
     ENABLED  = True
-    HELP     = "!analyse  shows the analyse of the irc"
+    HELP     = "!analyse  shows the average of the irc analyse\n" 
     CHANNELS = []
 
     def __init__(
@@ -73,23 +73,48 @@ class Analyse(Plugin):
             #plugin not available in the channel => return
             return
 
-        if msg in ("!analyse", "!analyze", "!sentiment"):
+        if msg.startswith("!analyse"):
             #react to command
 
             self.ircbot.switch_personality("yogeshwar")
 
             message =  "--- sentiment analysis ---\n"
+            total = {
+                "positive" : 0.0,
+                "positive_score" : 0.0,
+                "negative" : 0.0,
+                "negative_score" : 0.0,
+                "neutral" : 0.0,
+            }
             for k in sorted(self.count.keys()):
                 dt = datetime.datetime.strptime(k, "%Y%m%d")
-                message += "%s:\n  positive: %2.2f%% [score: %2.2f]\n  negative:  %2.2f%% [score: %2.2f]\n"\
-                       "  neutral:  %2.2f%% (unknown)\n" % (
-                            dt.strftime("%d/%m/%Y"),
-                            self.count[k]["positive"] / float(self.count[k]["total"]) * 100,
-                            self.count[k]["positive_score"],
-                            self.count[k]["negative"] / float(self.count[k]["total"]) * 100,
-                            self.count[k]["negative_score"],
-                            self.count[k]["neutral"] / float(self.count[k]["total"]) * 100
-                       )
+                total["positive"] += (
+                    self.count[k]["positive"] / 
+                    float(self.count[k]["total"]) * 100
+                ) / len(self.count.keys())
+                total["positive_score"] += self.count[k]["positive_score"]
+                total["negative"] += (
+                    self.count[k]["negative"] / 
+                    float(self.count[k]["total"]) * 100
+                ) / len(self.count.keys())
+                total["negative_score"] += self.count[k]["negative_score"]
+                total["neutral"] += (
+                    self.count[k]["neutral"] / 
+                    float(self.count[k]["total"]) * 100
+                ) / len(self.count.keys())
+                
+            from_ = datetime.datetime.strptime(self.count.keys()[0], "%Y%m%d")
+            to_   = datetime.datetime.strptime(self.count.keys()[-1], "%Y%m%d")
+            message = "--- sentiment analysis from %s to %s ---\n" \
+                      "positive: %2.2f%% [score: %2.2f]\n" \
+                      "negative:  %2.2f%% [score: %2.2f]\n" \
+                      "neutral:  %2.2f%% (unknown)\n" % (
+                          from_.strftime("%d/%m/%Y"),
+                          to_.strftime("%d/%m/%Y"),
+                          total["positive"], total["positive_score"],
+                          total["negative"], total["negative_score"],
+                          total["neutral"]
+                      )
 
             #finally, send the message with the
             self.ircbot.privmsg(params[0], message)
