@@ -260,10 +260,10 @@ def main():
 
     #convert channels to list
     if isinstance(args.channel, str):
-        args_channels = [args.channel,]
+        args_channels = args.channel.split(",")
     else:
         args_channels = args.channel
-
+    
     #add missing '#' to channels
     channels = []
     for ch in args_channels:
