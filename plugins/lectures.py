@@ -88,17 +88,18 @@ class Lectures(Plugin):
             if x.get("bgcolor") != "#c56529":
                 #if not heading => get item
                 items = x.findall("td[@class='lecture_started']")
-
-                lecturer = None
-                if items[1].find("span") != None:
-                    lecturer = items[1].find("span").text.strip()
-                lectures.append({
-                    "time"     : items[0].text.strip(),
-                    "title"    : items[1].text.strip(),
-                    "lecturer" : lecturer,
-                    "no"       : items[2].text.strip(),
-                    "room"     : items[3].text.strip(),
-                })
+                if items:                
+                    lecturer = None
+                
+                    if (len(items) >= 1) and (items[1].find("span") != None):
+                        lecturer = items[1].find("span").text.strip()
+                    lectures.append({
+                        "time"     : items[0].text.strip(),
+                        "title"    : items[1].text.strip(),
+                        "lecturer" : lecturer,
+                        "no"       : items[2].text.strip(),
+                        "room"     : items[3].text.strip(),
+                    })
 
         return lectures
 
