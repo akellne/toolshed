@@ -25,6 +25,13 @@ class Static(Plugin):
         random_message=[4 * 60 * 60, 8 * 60 * 60] # between 4 h and 8 h
     ):
         Plugin.__init__(self, ircbot, cache_time, random_message)
+        
+    
+    def on_init(self):
+        #start random message timer on plugin initialization
+        self.log.debug("Starting random message timer...") 
+        self.start_random_message_timer()
+
 
     def get_train(self):
         r = random.random()
