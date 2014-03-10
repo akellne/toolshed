@@ -130,5 +130,5 @@ class IfINews(Plugin):
                         item["summary"].replace("\\", "")
                     )
 
-        return tmp.encode("utf-8")
+        return tmp.decode("latin-1").encode("utf-8")
 
