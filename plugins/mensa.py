@@ -122,6 +122,8 @@ class Mensa(Plugin):
                         if el is not None:
                             starter   = details.text.strip()
                             main_dish = el.text
+                            if el.getnext() is not None:
+                                main_dish += " " + el.getnext().text.strip()
                             if main_dish:
                                 side_dish = el.tail.strip()
                             else:
