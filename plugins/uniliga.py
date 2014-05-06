@@ -89,10 +89,6 @@ class UniLiga(Plugin):
             elif i % 7 == 6:
                 match["result"] = td.text_content().strip()
                 matches[match_day].append(match)
-                print match
-
-            text = td.text_content().strip()
-            print "=>", i, text
 
         tmp = "--- Uni-Liga powered by Stoppelhopser  ---\n"
         for k, v in matches.items():
