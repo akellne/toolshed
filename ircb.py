@@ -32,7 +32,7 @@ GREETINGS = [
     "Bonjour.", "Salut.", "Hallo.", "Konnichiwa!", "Moin.",
     "Hej!", "¡Hola!", "¡Buenos días!", "Buon giorno!",
     "Hyvää päivää!", "Hoi!", "Goedendag!", "Selam!", "Iyi günler!",
-    "Bon dia!"
+    "Bon dia!", "Moinsen.", "Hallöchen Popöchen"
 ]
 
 #farewells that are randomly chosen
@@ -40,7 +40,10 @@ FAREWELLS = [
     "Au revoir.", "Salut.", "Ã€ bientÃ´t.", "Ã€ plus tard.",
     "Ã€ la prochaine.", "Bonne journÃ©e!", "Sayounara!", "Ciao.",
     "¡Hasta luego!", "¡Adiós!", "Arrivederci!", "Alla prossima!",
-    "Näkemiin!", "Nähdään pian!", "Eyvallah!", "A reveure!"
+    "Näkemiin!", "Nähdään pian!", "Eyvallah!", "A reveure!",
+    "Tchüssikowski", "Bis Baldrian", "Man siebt sich!", "Tschö mit ö",
+    "Pfiat di", "Servus", "Dosvedanja", "Hade", "Horrido", 
+    "Wiederschaun, reingehaun!", "Schleich mi", "Bis denne"
 ]
 
 class IRCBot(IRCClient):
@@ -207,7 +210,7 @@ def get_default_config():
         config.set("defaults", "nick", "toolshed")
         config.set("defaults", "realname", "Stan Marsh")
         config.set("defaults", "channels", "")
-        config.set("defaults", "server", "irc.servercentral.net:6667")
+        config.set("defaults", "server", "irc.efnet.pl:6667")
         config.set("defaults", "commands", "")
         with open(CONFIG_FILE, "wb") as f:
             config.write(f)
