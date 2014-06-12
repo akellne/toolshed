@@ -181,12 +181,13 @@ class IRCBot(IRCClient):
 
     def switch_personality(self, nick):
         #self.part(self.channel, "")
-        self.nick(nick)
+        #self.nick(nick)
         #self.join(self.channel)
-
+        pass
 
     def reset_personality(self):
-        self.switch_personality(self.nickname)
+        #self.switch_personality(self.nickname)
+        pass
 
 
     def trigger_once(self, cmds, shutdown_trigger_once=True):
