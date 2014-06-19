@@ -39,6 +39,14 @@ STATIC_MESSAGES = {
         "Mantateller",
         "Gelsenkirchner Geschnetzeltes",
         "Kreuzberger Filet",
+        "Schimanski-Teller",
+        "Bottroper Schlemmerplatte",
+        "Bergische Schlachteplatte",
+        "Fernfahrerplatte",
+        "Kanzler-Teller",
+        "CP",
+        "deutsche Platte",
+        "Molotow-Wurst",
     ],
 }
 
