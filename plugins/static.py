@@ -32,6 +32,9 @@ STATIC_MESSAGES = {
     "!;)" : [
         "the world is elefantastic!",
     ],
+    "!update" : [
+        "\x01ACTION wants to be updated!\x01",
+    ],
     "!currywurst" : [
         "Ruhrpott Carpaccio",
         "Truckerfrühstück",
