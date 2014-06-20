@@ -10,11 +10,11 @@ import json
 
 from base import Plugin
 
-#URL to the ifi news ics file
+#URL to fixtures
 URL = "http://worldcup.sfg.io/matches/today"
 
-#maybe add groups later?!
-#URL2 = http://worldcup.sfg.io/group_results
+#URL to groups
+URL2 = "http://worldcup.sfg.io/group_results"
 
 #dateformat used
 DTFORMAT="%Y-%m-%dT%H:%M:%S"
@@ -31,7 +31,8 @@ class WM(Plugin):
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
     ENABLED  = True
-    HELP     = "!wm  shows the current WM fixtures"
+    HELP     = "!wm  shows the current WM fixtures\n" \
+               "!wm+<group> shows the table of the WM group"
     CHANNELS = []
 
     def __init__(
@@ -48,25 +49,50 @@ class WM(Plugin):
             #plugin not available in the channel => return
             return
 
-        if msg == "!wm":
+        if msg.startswith("!wm"):
             #self.ircbot.switch_personality(nick="KMH")
 
-            #get data from cache
-            reload_data, self.data = self.load_cache()
-            if reload_data:
-                #reload the data, if too old
-                self.data = self._get_fixtures()
-                self.save_cache(data=self.data)
-            else:
-                self.data = self.data.encode("utf-8")
+            #NO CACHING
 
-            message = "--- WM 2014 today ---\n"
-            message += self.data
+            if msg == "!wm":
+                message = "--- WM 2014 today ---\n"
+                message += self._get_fixtures()
+
+            elif msg in (
+                "!wm+A", "!wm+B", "!wm+C", "!wm+D", "!wm+E", "!wm+F",
+                "!wm+G", "!wm+H",
+            ):
+                message = "--- WM 2014 - Group %s ---\n" % msg[-1]
+                message += self._get_groups(msg[-1])
 
             #finally, send the message with the
             self.ircbot.privmsg(params[0], message)
 
-            self.ircbot.reset_personality()
+            #self.ircbot.reset_personality()
+
+
+    def _get_groups(self, group):
+        f      = urllib2.urlopen(URL2)
+        teams = json.loads(f.read())
+
+        tmp = "Country  GP   W D L  GF GA  GD PTS\n"
+        for team in teams:
+            group_no = ord(group) - 64
+            if team["group_id"] == group_no:
+                tmp += "%s      %d    %d %d %d   %d  %d  %2d  %d\n" % (
+                    team["fifa_code"],
+                    team["wins"] + team["draws"] + team["losses"],
+                    team["wins"],
+                    team["draws"],
+                    team["losses"],
+                    team["goals_for"],
+                    team["goals_against"],
+                    team["goals_for"] - team["goals_against"],
+                    team["wins"] * 3 + team["draws"]
+                )
+
+        return tmp.decode("latin-1").encode("utf-8")
+
 
 
     def _get_fixtures(self):
@@ -109,4 +135,4 @@ class WM(Plugin):
 
 if __name__ == "__main__":
     wm = WM(None)
-    wm._get_fixtures()
+    wm._get_groups("A")
