@@ -35,7 +35,7 @@ class WM(Plugin):
     CHANNELS = []
 
     def __init__(
-        self, ircbot, cache_time=datetime.timedelta(hours=1),
+        self, ircbot, cache_time=datetime.timedelta(minutes=1),
         random_message=[None, None]
     ):
         Plugin.__init__(self, ircbot, cache_time, random_message)
@@ -96,7 +96,12 @@ class WM(Plugin):
                 tmp += "      :   "
 
             tmp += "  at %s" % fixture["location"]
-            tmp += "  [%s]" % fixture["status"]
+
+            if fixture["status"] == "future":
+                tmp += "  %sh" % dt.strftime("%H:%M")
+            else:
+                tmp += "  [%s]" % fixture["status"]
+
             tmp += "\n"
 
         return tmp.decode("latin-1").encode("utf-8")
