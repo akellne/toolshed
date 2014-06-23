@@ -150,8 +150,6 @@ class Mensa(Plugin):
             #no mensa plan vailable
             return None
 
-        print today, self.days[today]
-
         if self.days[today] == []:
             #no information
             return None
@@ -164,6 +162,8 @@ class Mensa(Plugin):
             tmp += "    %s\n" % item["main_dish"]
             if item["side_dish"]:
                 tmp += "    %s\n" % item["side_dish"]
+        #hack to add space
+        tmp = tmp.replace("undPastabuffet", "und Pastabuffet")
 
         return tmp.strip().encode("utf-8")
 
