@@ -66,7 +66,7 @@ class Gwdg(Plugin):
                 self.save_cache(data=self.breakdowns)
 
             self.breakdowns = self._get_breakdowns()
-            if self.breakdowns is not []:
+            if len(self.breakdowns) > 0:
                 message = "--- GWDG-Breakdowns ---\n"
                 for b in self.breakdowns:
                     message += "%s  %s\n" % (
