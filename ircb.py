@@ -30,18 +30,18 @@ log = logging.getLogger("IRCBot")
 #greetings that are randomly chosen
 GREETINGS = [
     "Bonjour.", "Salut.", "Hallo.", "Konnichiwa!", "Moin.",
-    "Hej!", "¡Hola!", "¡Buenos días!", "Buon giorno!",
-    "Hyvää päivää!", "Hoi!", "Goedendag!", "Selam!", "Iyi günler!",
-    "Bon dia!", "Moinsen.", "Hallöchen Popöchen"
+    "Hej!", "ï¿½Hola!", "ï¿½Buenos dï¿½as!", "Buon giorno!",
+    "Hyvï¿½ï¿½ pï¿½ivï¿½ï¿½!", "Hoi!", "Goedendag!", "Selam!", "Iyi gï¿½nler!",
+    "Bon dia!", "Moinsen.", "Hallï¿½chen Popï¿½chen"
 ]
 
 #farewells that are randomly chosen
 FAREWELLS = [
     "Au revoir.", "Salut.", "Ã€ bientÃ´t.", "Ã€ plus tard.",
     "Ã€ la prochaine.", "Bonne journÃ©e!", "Sayounara!", "Ciao.",
-    "¡Hasta luego!", "¡Adiós!", "Arrivederci!", "Alla prossima!",
-    "Näkemiin!", "Nähdään pian!", "Eyvallah!", "A reveure!",
-    "Tchüssikowski", "Bis Baldrian", "Man siebt sich!", "Tschö mit ö",
+    "ï¿½Hasta luego!", "ï¿½Adiï¿½s!", "Arrivederci!", "Alla prossima!",
+    "Nï¿½kemiin!", "Nï¿½hdï¿½ï¿½n pian!", "Eyvallah!", "A reveure!",
+    "Tchï¿½ssikowski", "Bis Baldrian", "Man siebt sich!", "Tschï¿½ mit ï¿½",
     "Pfiat di", "Servus", "Dosvedanja", "Hade", "Horrido", 
     "Wiederschaun, reingehaun!", "Schleich mi", "Bis denne"
 ]
@@ -84,6 +84,7 @@ class IRCBot(IRCClient):
         handle incoming irc messages
         """
         IRCClient.handle_message(self, prefix, tail, cmd, *args)
+        sender = (prefix.split("!")[0].split(":")[-1] if prefix else None);
 
         #handle incoming messages
         if cmd == RPL_ENDOFMOTD:
@@ -130,18 +131,20 @@ class IRCBot(IRCClient):
             if tail == "!help":
                 #return help for all enabled plugins
                 self.switch_personality("lilhelper")
+                in_channel = args[0].startswith('#')
 
                 #add help text for overall help of the bot
-                help_text = ""
-                for plugin in self.plugins:
-                    if (
-                        plugin.HELP and plugin.is_in_channel(args[0])
-                    ):
-                        #add help text for plugins
-                        help_text += "%s\n" % plugin.HELP
+                def help_text():
+                    for plugin in self.plugins:
+                        if (
+                            plugin.HELP and (not in_channel or plugin.is_in_channel(args[0]))
+                        ):
+                            #add help text for plugins
+                            yield str(plugin.HELP)
 
+                target = (args[0] if in_channel else sender)
                 self.privmsg(
-                    args[0], "--- help---\n%s" % help_text
+                    target, "--- help---\n%s" % '\n'.join(help_text())
                 )
                 self.reset_personality()
 
@@ -151,7 +154,13 @@ class IRCBot(IRCClient):
             #when a message is received delegate it to the plugins
             try:
                 if cmd == "PRIVMSG":
-                    plugin.on_privmsg(tail, *args)
+                    try:
+                        plugin.on_privmsg_ex(sender, tail, *args);
+
+                    except AttributeError:
+                        in_channel = args[0].startswith('#')
+                        args = tuple([args[0] if in_channel else sender] +list(args[1:]));
+                        plugin.on_privmsg(tail, *args)
 
             except Exception, e:
                 log.exception("Could not handle message: %s" % e)
@@ -272,7 +281,7 @@ def main():
     channels = []
     for ch in args_channels:
         if not ch.startswith("#"):
-           ch = "#%s" % ch
+            ch = "#%s" % ch
         channels.append(ch)
 
     log.debug(
