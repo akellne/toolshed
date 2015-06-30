@@ -30,7 +30,7 @@ class WM(Plugin):
     NAME     = "WM 2014"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
-    ENABLED  = True
+    ENABLED  = False
     HELP     = "!wm  shows the current WM fixtures\n" \
                "!wm+<group> shows the table of the WM group"
     CHANNELS = []

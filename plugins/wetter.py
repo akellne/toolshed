@@ -20,7 +20,7 @@ class Wetter(Plugin):
     NAME     = "Wetter"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
-    ENABLED  = True
+    ENABLED  = False
     HELP     = "!wetter  current weather forecast\n" \
                "!wetter+1  weather forecast for tomorrow\n" \
                "!wetter+2  weather forecast for the day after tomorrow"

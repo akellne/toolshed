@@ -19,7 +19,7 @@ class Film(Plugin):
     NAME     = "Film"
     AUTHOR   = "konrad.rieck@uni-goettingen.de"
     VERSION  = (0, 0, 1)
-    ENABLED  = True
+    ENABLED  = False
     HELP     = "!film  return description from filmlexikon"
     CHANNELS = []
 

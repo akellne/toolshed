@@ -22,7 +22,7 @@ class Bahn(Plugin):
     NAME     = "Bahn"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
-    ENABLED  = True
+    ENABLED  = False
     HELP     = "!bahn+berlin    display next trains to Berlin\n" \
                "!bahn+hannover  display next trains to Hannover"
     CHANNELS = []

@@ -24,7 +24,7 @@ class Stau(Plugin):
     NAME     = "Stau"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
-    ENABLED  = True
+    ENABLED  = False
     HELP     = "!stau  display the current traffic jams "\
                "(routes: %s)" % ", ".join(ROUTES)
     CHANNELS = []

@@ -28,7 +28,7 @@ class IfINews(Plugin):
     NAME     = "IfI News"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
-    ENABLED  = True
+    ENABLED  = False
     HELP     = "!ifi  shows the cureent ifi news"
     CHANNELS = []
 
