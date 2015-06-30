@@ -30,18 +30,18 @@ log = logging.getLogger("IRCBot")
 #greetings that are randomly chosen
 GREETINGS = [
     "Bonjour.", "Salut.", "Hallo.", "Konnichiwa!", "Moin.",
-    "Hej!", "�Hola!", "�Buenos d�as!", "Buon giorno!",
-    "Hyv�� p�iv��!", "Hoi!", "Goedendag!", "Selam!", "Iyi g�nler!",
-    "Bon dia!", "Moinsen.", "Hall�chen Pop�chen"
+    "Hej!", "¡Hola!", "¡Buenos días!", "Buon giorno!",
+    "Hyvää päivää!", "Hoi!", "Goedendag!", "Selam!", "Iyi günler!",
+    "Bon dia!", "Moinsen.", "Hallöchen Popöchen"
 ]
 
 #farewells that are randomly chosen
 FAREWELLS = [
     "Au revoir.", "Salut.", "À bientôt.", "À plus tard.",
     "À la prochaine.", "Bonne journée!", "Sayounara!", "Ciao.",
-    "�Hasta luego!", "�Adi�s!", "Arrivederci!", "Alla prossima!",
-    "N�kemiin!", "N�hd��n pian!", "Eyvallah!", "A reveure!",
-    "Tch�ssikowski", "Bis Baldrian", "Man siebt sich!", "Tsch� mit �",
+    "¡Hasta luego!", "¡Adiós!", "Arrivederci!", "Alla prossima!",
+    "Näkemiin!", "Nähdään pian!", "Eyvallah!", "A reveure!",
+    "Tchüssikowski", "Bis Baldrian", "Man siebt sich!", "Tschö mit ö",
     "Pfiat di", "Servus", "Dosvedanja", "Hade", "Horrido", 
     "Wiederschaun, reingehaun!", "Schleich mi", "Bis denne"
 ]
