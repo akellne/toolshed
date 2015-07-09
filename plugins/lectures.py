@@ -12,7 +12,7 @@ from base import Plugin
 
 
 #URL to the lectures
-URL = "http://univz.uni-goettingen.de/veranstaltungsmonitor/public/?piznr=2412"
+URL = "https://univz.uni-goettingen.de/veranstaltungsmonitor/public/?piznr=2412"
 
 
 class Lectures(Plugin):
@@ -22,7 +22,7 @@ class Lectures(Plugin):
     NAME     = "Lectures"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
-    ENABLED  = True
+    ENABLED  = False
     HELP     = "!lectures   show today's lectures at IfI\n"
     CHANNELS = []
 

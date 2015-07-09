@@ -11,7 +11,7 @@ import json
 from base import Plugin
 
 #URL to burgerking
-URL = "http://www.burgerking.de"
+URL = "http://www.burgerking.de/neues-aktionen"
 
 
 class FastFood(Plugin):
@@ -66,19 +66,19 @@ class FastFood(Plugin):
             root = lxml.html.parse(URL)
 
             #get relevant part
+            regexpNS = "http://exslt.org/regular-expressions"
             el = root.xpath(
-                "//h2[text()='King des Monats']/following-sibling::div[@class='info']/p"
+                "//h3[re:test(text(), 'des Monats')]/following-sibling::p",
+                namespaces={'re': regexpNS}
             )
 
-            res = re.compile("Der (.*?) -" ).search(el[0].text)
-            if res:
-                text = "--- King of the Month: '%s' ---\n%s" % (
-                    res.group(1),  el[0].text
-                )
-            else:
-                text = "--- King of the Month ---\n%s" % el[0].text
+            text = "--- King of the Month ---\n%s" % (
+                re.sub(r"(\xa0)+", "", el[0].text)
+            )
+            print repr(el[0].text)
 
-        except:
+
+        except Exception, e:
             text = "Sorry, burgerking parser is broken. Cannot get " \
                    "the King of the Month"
 

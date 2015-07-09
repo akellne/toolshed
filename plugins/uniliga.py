@@ -22,7 +22,7 @@ class UniLiga(Plugin):
     NAME     = "Uni Liga"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 2)
-    ENABLED  = True
+    ENABLED  = False
     HELP     = "!uniliga       display the last stoppelhopser results and table\n" \
                "!uniliga+table display the current stoppelhopser table\n" \
                "!uniliga+last  display the last stoppelhopser results\n" \
