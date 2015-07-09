@@ -47,6 +47,9 @@ FAREWELLS = [
 ]
 
 class IRCBot(IRCClient):
+    
+    ENABLE_GREETINGS = False
+    
     """
     irc bot that can be extended by plugins
     """
@@ -94,8 +97,9 @@ class IRCBot(IRCClient):
                 self.join(channel, key)
 
                 #random greeting
-                if (random.random() > 0.66):
-                    self.privmsg(channel, random.choice(GREETINGS))
+                if IRCBot.ENABLE_GREETINGS:
+                    if (random.random() > 0.66):
+                        self.privmsg(channel, random.choice(GREETINGS))
 
                 #trigger once commands to itself
                 for trigger_cmd in self.trigger_once_commands:
@@ -142,10 +146,11 @@ class IRCBot(IRCClient):
                             #add help text for plugins
                             yield str(plugin.HELP)
 
-                target = (args[0] if in_channel else sender)
-                self.privmsg(
-                    target, "--- help---\n%s" % '\n'.join(help_text())
-                )
+                s = '\n'.join(help_text())
+                if s:
+                    target = (args[0] if in_channel else sender)
+                    self.privmsg(target, "--- help---\n%s" % s)
+
                 self.reset_personality()
 
 
@@ -179,9 +184,10 @@ class IRCBot(IRCClient):
                 log.exception("Could not handle message: %s" % e)
 
         #send farewell message
-        for channel in self.channels:
-            if (random.random() > 0.66):
-                self.privmsg(channel, random.choice(FAREWELLS))
+        if IRCBot.ENABLE_GREETINGS:
+            for channel in self.channels:
+                if (random.random() > 0.66):
+                    self.privmsg(channel, random.choice(FAREWELLS))
 
         #quit from server
         self.quit()
