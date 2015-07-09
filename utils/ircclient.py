@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import asynchat
-import asyncore
 import socket
 import logging
 import time
@@ -427,3 +426,25 @@ class IRCClient(asynchat.async_chat):
     def away(self, message=""):
         self.send_data("AWAY %s" % message)
 
+    @staticmethod
+    def __checkmode(mode, allowed_modes):
+        ILLEGAL_MODE = "Illegal mode specifier"
+        
+        if not mode or len(mode) > 2:
+            raise ValueError(ILLEGAL_MODE)
+
+        has_modifier = (mode[0] in '+-')
+        if not has_modifier and len(mode) > 1:
+            raise ValueError(ILLEGAL_MODE)
+
+        m = (mode[1] if has_modifier else mode [0])
+        if m not in allowed_modes:
+            raise ValueError(ILLEGAL_MODE)
+
+    def user_mode(self, user, mode):
+        IRCClient.__checkmode(mode, "iwso")
+        self.send_data("MODE %s %s" % (user, mode))
+
+    def channel_mode(self, channel, mode, *args):
+        IRCClient.__checkmode(mode, "opsitnmlbvk")
+        self.send_data("MODE %s %s %s" % (channel, mode, ' '.join(args)))
