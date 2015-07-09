@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import sys
+import argparse
 import asyncore
-import datetime
-import time
+import ConfigParser
 import logging
+import os
 import random
 import signal
-import argparse
-import ConfigParser
+import string
+import sys
 
 from utils.ircclient import IRCClient, ERR_NICKNAMEINUSE, RPL_MOTD, \
     RPL_ENDOFMOTD
@@ -158,14 +157,8 @@ class IRCBot(IRCClient):
         for plugin in self.plugins:
             #when a message is received delegate it to the plugins
             try:
-                if cmd == "PRIVMSG":
-                    try:
-                        plugin.on_privmsg_ex(sender, tail, *args);
-
-                    except AttributeError:
-                        in_channel = args[0].startswith('#')
-                        args = tuple([args[0] if in_channel else sender] +list(args[1:]));
-                        plugin.on_privmsg(tail, *args)
+                if all(x in string.ascii_uppercase for x in cmd):
+                    plugin.on_msg(cmd, sender, tail, *args)
 
             except Exception, e:
                 log.exception("Could not handle message: %s" % e)

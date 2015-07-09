@@ -1,5 +1,4 @@
 import os
-import sys
 import json
 import logging
 import datetime
@@ -73,9 +72,26 @@ class Plugin(object):
 
     def on_init(self):
         """
-        called on initialisation of the plugin
+        called on initialization of the plugin
         """
         self.log.debug("Initializing plugin")
+
+
+    def on_msg(self, cmd, sender, msg, *params):
+        """
+        called on arrival of any message
+        """
+
+        if cmd == "PRIVMSG":
+            self.on_privmsg_ex(sender, msg, *params);
+
+
+    def on_privmsg_ex(self, sender, msg, *params):
+        in_channel = params[0].startswith('#')
+        args = tuple(
+            [params[0] if in_channel else sender] +list(params[1:])
+        );
+        self.on_privmsg(msg, *args)
 
 
     def on_privmsg(self, msg, *params):
