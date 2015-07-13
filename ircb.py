@@ -153,15 +153,14 @@ class IRCBot(IRCClient):
                 self.reset_personality()
 
 
-        #delegate incoming message to plugin
-        for plugin in self.plugins:
-            #when a message is received delegate it to the plugins
-            try:
-                if all(x in string.ascii_uppercase for x in cmd):
+        try:
+            #delegate incoming message to plugin
+            if all(x in string.ascii_uppercase for x in cmd):
+                for plugin in self.plugins:
                     plugin.on_msg(cmd, sender, tail, *args)
 
-            except Exception, e:
-                log.exception("Could not handle message: %s" % e)
+        except Exception, e:
+            log.exception("Could not handle message: %s" % e)
 
 
     def shutdown(self):
