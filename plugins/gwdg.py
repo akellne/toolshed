@@ -5,18 +5,20 @@ import os
 import sys
 import locale
 import datetime
-import lxml.html
+import lxml.etree
+from lxml.html.clean import Cleaner
 import json
 import email.utils
+import requests
 
 from base import Plugin
 
 
 #URL to GWDG breakdowns
-URL = "http://www.gwdg.de/index.php?id=1640&type=100"
+URL = "https://info.gwdg.de/news/feed/"
 
 #do not show messages older than this
-OLDEST_NEWS = datetime.datetime.now() - datetime.timedelta(days=2)
+OLDEST_NEWS = datetime.datetime.now() - datetime.timedelta(days=3)
 
 
 
@@ -79,7 +81,7 @@ class Gwdg(Plugin):
 
 
             #finally, send the message with the
-            self.ircbot.privmsg(params[0], message.strip().encode("utf-8"))
+            self.ircbot.privmsg(params[0], message.encode("utf-8").strip())
 
             self.ircbot.reset_personality()
 
@@ -88,28 +90,32 @@ class Gwdg(Plugin):
         """
         returns breakdowns from GWDG in given timewindow
         """
+        #load feed first, since not working with lxml directly
+        r = requests.get(URL)
+        
         #load url and parse it with html parser
-        root = lxml.html.parse(URL)
-
+        root = lxml.etree.fromstring(r.text.encode("utf-8"))
+        
         #get items
         items = []
-        for x in root.findall("//item"):
+        for x in root.findall("channel/item"):
             pubdate = datetime.datetime.fromtimestamp(
                 email.utils.mktime_tz(
                     email.utils.parsedate_tz(
-                        x.find("pubdate").text[:-6]
+                        x.find("pubDate").text[:-6]
                     )
                 )
             )
             if pubdate >= OLDEST_NEWS:
+                cleaner = Cleaner(allow_tags=[''], remove_unknown_tags=False)
+                title = cleaner.clean_html(x.find("title").text)[5:-6]
+                content = cleaner.clean_html(x.find("description").text)[5:-6] 
                 item = {
-                    "title"   : x.find("title").text,
+                    "title"   : title,
                     "pubdate" : str(pubdate),
-                    "content" : x.find("description").getnext().text_content(),
+                    "content" : content,
                 }
                 items.append(item)
 
         return sorted(items, key=lambda x: x["pubdate"], reverse=True)
-
-
 

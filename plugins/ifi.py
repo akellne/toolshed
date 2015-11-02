@@ -11,7 +11,7 @@ import json
 from base import Plugin
 
 #URL to the ifi news ics file
-URL = "http://filepool.informatik.uni-goettingen.de/gcms/ifi/news/ifi_cal.php"
+URL = "http://webhelper.informatik.uni-goettingen.de/editor/ical/ifinews.ics"
 
 #dateformat used in ics files (date with and without time)
 ICS_UTC="%Y%m%dT%H%M%SZ"
@@ -87,7 +87,7 @@ class IfINews(Plugin):
                     #replace stuff for all day events that use another format
                     for x in ("DTSTART", "DTEND"):
                         line = line.replace(
-                            "%s;VALUE=DATE" % x,
+                            "%s;VALUE=DATE-TIME" % x,
                             "%s" % x 
                         )
 
@@ -111,14 +111,13 @@ class IfINews(Plugin):
                                     item["onlydate"] = True
                                 except Exception:
                                     pass
-
             li.append(item)
 
         #build message
         tmp = ""
         for item in sorted(li, key=lambda item: item["dtstart"]):
             if item["dtstart"] >= datetime.datetime.today():
-                if not item["onlydate"]:
+                if item["onlydate"] is False:
                     tmp += "%sh to %sh:  %s\n" % (
                         item["dtstart"].strftime("%a %d. %b %Y, %H:%M"),
                         item["dtend"].strftime("%H:%M"),
