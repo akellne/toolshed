@@ -28,7 +28,7 @@ class IfINews(Plugin):
     NAME     = "IfI News"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
-    ENABLED  = False
+    ENABLED  = True
     HELP     = "!ifi  shows the cureent ifi news"
     CHANNELS = []
 
@@ -59,7 +59,10 @@ class IfINews(Plugin):
                 self.data = self.data.encode("utf-8")
 
             message = "--- IfI News: ---\n"
-            message += self.data
+            if self.data:
+                message += self.data
+            else:
+                message += "there are currently no news!"
 
             #finally, send the message with the
             self.ircbot.privmsg(params[0], message)

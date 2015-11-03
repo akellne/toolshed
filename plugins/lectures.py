@@ -7,6 +7,7 @@ import locale
 import datetime
 import lxml.html
 import json
+import requests
 
 from base import Plugin
 
@@ -22,7 +23,7 @@ class Lectures(Plugin):
     NAME     = "Lectures"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
-    ENABLED  = False
+    ENABLED  = True
     HELP     = "!lectures   show today's lectures at IfI\n"
     CHANNELS = []
 
@@ -46,10 +47,6 @@ class Lectures(Plugin):
     def on_privmsg(self, msg, *params):
         Plugin.on_privmsg(self, msg, *params)
 
-        if not self.is_in_channel(params[0]):
-            #plugin not available in the channel => return
-            return
-
         if msg in ("!lectures"):
             self.ircbot.switch_personality("infod")
 
@@ -69,6 +66,9 @@ class Lectures(Plugin):
                     message += " (%s)" % lecture["lecturer"]
                 message += ", room %s\n" % lecture["room"]
 
+            if message == "":
+                message = "There are currently no lectures!"
+
             #finally, send the message with the
             self.ircbot.privmsg(params[0], message.strip().encode("utf-8"))
 
@@ -79,12 +79,15 @@ class Lectures(Plugin):
         """
         get lectures from webpage
         """
+        #load feed first, since not working with lxml directly
+        r = requests.get(URL)
+
         #load url and parse it with html parser
-        root = lxml.html.parse(URL)
+        root = lxml.html.fromstring(r.text.encode("utf-8"))
 
         #get the lectures
         lectures = []
-        for x in root.findall("//div[@id='id_content']/table/tr"):
+        for x in root.findall("body/div[@id='id_content']/table/tr"):
             if x.get("bgcolor") != "#c56529":
                 #if not heading => get item
                 items = x.findall("td[@class='lecture_started']")
@@ -102,5 +105,4 @@ class Lectures(Plugin):
                     })
 
         return lectures
-
 
