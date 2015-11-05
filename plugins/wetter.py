@@ -19,8 +19,8 @@ class Wetter(Plugin):
     """
     NAME     = "Wetter"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
-    VERSION  = (0, 0, 1)
-    ENABLED  = False
+    VERSION  = (0, 0, 2)
+    ENABLED  = True
     HELP     = "!wetter  current weather forecast\n" \
                "!wetter+1  weather forecast for tomorrow\n" \
                "!wetter+2  weather forecast for the day after tomorrow"
@@ -76,46 +76,33 @@ class Wetter(Plugin):
         #load url and parse it with html parser
         root = lxml.html.parse(URL)
 
-        #get relevant part
-        el = root.find(
-            "body/div[@id='container']/div[@id='main']/div[@id='content']"
-        )
-
+        #get weather panels
         days = {}
-        for x in el.xpath(
-            "div[@class='vorschau_wrapper ' or @class='vorschau_wrapper']"
-        ):
-            #print lxml.html.tostring(x)
-
-            day = x.find("div[@class='day weekend']").text_content()[-10:]
+        for panel in root.xpath("//div[contains(@class, 'panelContainer weather')]"):
+            # get day
+            day = panel.xpath(
+                "div/div/div[contains(@style, 'color: #365383;')]"
+            )[0].text_content().strip()[-10:]
             #get date
             dt = datetime.datetime.strptime(
                 day, "%d.%m.%Y"
             ).strftime("%Y%m%d")
 
-            #for each day get different time of days
             tods = {}
-            for tod in ("morgens", "mittags", "abends", "nachts"):
+            for col in panel.findall("div/div[@class='small-3 columns']"):
+                rows = col.findall("div[@class='row']")
+
+                # get time of day (morgens, mittags etc.)
+                tod = rows[0].text_content().lower().strip()
+
+                # prepare day item
                 tods[tod] = {}
-
-                #degree
-                el = x.find("div[@class='%s']" % tod).find(
-                    "div[@class='degree']"
-                )
-                tods[tod]["degree"] = el.text_content()
-
-                #status
-                el = el.getnext()
-                tods[tod]["status"] = el.text_content()
-
-                #skip gefuehlt wie => rain probability
-                el = el.getnext().getnext()
-                tods[tod]["rainprob"] = el.text_content()
-
-                #wind
-                el = el.getnext()
-                tods[tod]["wind"] = el.text_content()
-
+                tods[tod]["degree"] = rows[2].text_content().strip()
+                tods[tod]["status"] = rows[3].text_content().strip()
+                tods[tod]["rainprob"] = rows[5].text_content().strip()
+                tmp = rows[6].text_content().strip().split("\n")
+                tods[tod]["wind"] = "%s %s" % (tmp[0].strip(), tmp[1].strip())
+                
             days[dt] = tods
 
         return days
@@ -157,4 +144,5 @@ class Wetter(Plugin):
     def _get_day_after_tomorrow(self):
         dt = datetime.datetime.today() + datetime.timedelta(days=1)
         return self._get_today(dt)
+
 
