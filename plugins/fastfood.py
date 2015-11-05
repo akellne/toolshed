@@ -7,6 +7,7 @@ import sys
 import datetime
 import lxml.html
 import json
+import requests
 
 from base import Plugin
 
@@ -62,26 +63,27 @@ class FastFood(Plugin):
         load king of the month from burgerking webpage
         """
         try:
+            #load feed first, since not working with lxml directly
+            r = requests.get(URL)
+
             #load url and parse it with html parser
-            root = lxml.html.parse(URL)
+            root = lxml.html.fromstring(r.text.encode("utf-8"))
 
             #get relevant part
-            regexpNS = "http://exslt.org/regular-expressions"
-            el = root.xpath(
-                "//h3[re:test(text(), 'des Monats')]/following-sibling::p",
-                namespaces={'re': regexpNS}
-            )
+            #"//img[contains(@src,'kdm')]")
+            kdm = "could not find king of the month"
+            for cols in root.xpath("//div[@class='col-md-4']"):
+                if "kdm" in cols.find("img").attrib["src"]:
+                    # king of the month picture
+                    kdm = cols.find("div/p").text_content()
+                    break
 
-            text = "--- King of the Month ---\n%s" % (
-                re.sub(r"(\xa0)+", "", el[0].text)
-            )
-            print repr(el[0].text)
-
+            text = "--- King of the Month ---\n%s" % ( kdm)
 
         except Exception, e:
+            print e
             text = "Sorry, burgerking parser is broken. Cannot get " \
                    "the King of the Month"
 
         return text.encode("utf-8")
-
 
