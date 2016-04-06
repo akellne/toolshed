@@ -21,7 +21,7 @@ class Mensa(Plugin):
     NAME     = "Mensa Plan"
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 2)
-    ENABLED  = True
+    ENABLED  = False
     HELP     = "!mensa   today's dishes in the nord mensa\n" \
                "!mensa+1 tomorrow's dishes in the nord mensa"
     CHANNELS = []
