@@ -22,8 +22,8 @@ class Mensa(Plugin):
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
     ENABLED  = True
-    HELP     = "!mensa   today's dishes in the brunswick mensa-1\n" \
-               "!mensa+1 tomorrow's dishes in the brunswick mensa-1"
+    HELP     = "!mensa   today's dishes in the brunswick mensa\n" \
+               "!mensa+1 tomorrow's dishes in the brunswick mensa"
     CHANNELS = []
 
     def __init__(
@@ -164,11 +164,7 @@ class Mensa(Plugin):
             tmp += "\n"
             lastkind = item["kind_meal"]
 
-        #hack to add space
-        tmp = tmp.replace("undPastabuffet", "und Pastabuffet")
-
         return tmp.strip().encode("utf-8")
-
 
     def _get_tomorrow(self):
         dt = datetime.datetime.today() + datetime.timedelta(days=1)
