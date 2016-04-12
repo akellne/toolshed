@@ -22,8 +22,8 @@ class Mensa(Plugin):
     AUTHOR   = "kellner@cs.uni-goettingen.de"
     VERSION  = (0, 0, 1)
     ENABLED  = True
-    HELP     = "!mensa   today's dishes in the nord mensa\n" \
-               "!mensa+1 tomorrow's dishes in the nord mensa"
+    HELP     = "!mensa   today's dishes in the brunswick mensa-1\n" \
+               "!mensa+1 tomorrow's dishes in the brunswick mensa-1"
     CHANNELS = []
 
     def __init__(
@@ -132,7 +132,7 @@ class Mensa(Plugin):
                 ).text_content().strip()
                 
                 days[dt].append(d)
-
+        print(days);
         return days
 
 
@@ -150,8 +150,12 @@ class Mensa(Plugin):
             return None
 
         tmp = "--- Der Chef de Cuisine empfiehlt ---\n"
+        # save category to prevent duplicate printing
+        lastkind = ""
         for item in self.days[today]:
-            tmp += "%s\n" % item["kind_meal"]
+            if lastkind!=item["kind_meal"]:
+                # \x02 = bold, \x0F = standard
+                tmp += "\x02%s\x0F\n" % item["kind_meal"]
             if item["meal_detail"]:
                 tmp += "    %s" % item["meal_detail"]
             if item["price_s"]:
@@ -159,6 +163,7 @@ class Mensa(Plugin):
                     item["price_s"], item["price_e"]
                 )
             tmp += "\n"
+            lastkind = item["kind_meal"]
 
         #hack to add space
         tmp = tmp.replace("undPastabuffet", "und Pastabuffet")
