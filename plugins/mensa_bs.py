@@ -132,7 +132,6 @@ class Mensa(Plugin):
                 ).text_content().strip()
                 
                 days[dt].append(d)
-        print(days);
         return days
 
 
@@ -151,7 +150,7 @@ class Mensa(Plugin):
 
         tmp = "--- Der Chef de Cuisine empfiehlt ---\n"
         # save category to prevent duplicate printing
-        lastkind = ""
+        lastkind = None
         for item in self.days[today]:
             if lastkind!=item["kind_meal"]:
                 # \x02 = bold, \x0F = standard
