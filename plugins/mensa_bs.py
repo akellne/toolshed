@@ -11,7 +11,10 @@ import json
 from base import Plugin
 
 #URL to the mensa plan
-URL = "http://www.stw-on.de/braunschweig/essen/menus/mensa-1"
+URLS = [
+    ("Mensa", "http://www.stw-on.de/braunschweig/essen/menus/mensa-1"),
+    ("360°", "http://www.stw-on.de/braunschweig/essen/menus/360-2")
+]
 
 
 class Mensa(Plugin):
@@ -19,8 +22,8 @@ class Mensa(Plugin):
     class to parse the mensa plan
     """
     NAME     = "Mensa Plan (BS)"
-    AUTHOR   = "kellner@cs.uni-goettingen.de"
-    VERSION  = (0, 0, 1)
+    AUTHOR   = "a.kellner@tu-bs.de"
+    VERSION  = (0, 0, 2)
     ENABLED  = True
     HELP     = "!mensa   today's dishes in the brunswick mensa\n" \
                "!mensa+1 tomorrow's dishes in the brunswick mensa"
@@ -83,55 +86,58 @@ class Mensa(Plugin):
         """
         get dishes from mensa webpage
         """
-        #load url and parse it with html parser
-        root = lxml.html.parse(URL)
-
         days = {}
-        for day in root.xpath("//table[@class='swbs_speiseplan']"):
-            # get weekday and mensa type (Mittags- vs. Abendmensa)
-            weekday, mtype = day.find(
-                "tr/th[@class='swbs_speiseplan_head']"
-            ).text_content().split(u"\u2013")
-            
-            if mtype.strip() == "Abendmensa":
-                # skip Abendmensa
-                continue
+        
+        for mensa_name, url in URLS:
+            #load url and parse it with html parser
+            root = lxml.html.parse(url)
 
-            #get date
-            dt = datetime.datetime.strptime(
-                weekday.strip().encode("latin1"), 
-                "%A, %d. %B %Y"
-            ).strftime("%Y%m%d")
-            if dt not in days:
-                days[dt] = []
-
-            for row in day.findall("tr")[1:]:
-                d = {}
+            for day in root.xpath("//table[@class='swbs_speiseplan']"):
+                # get weekday and mensa type (Mittags- vs. Abendmensa)
+                weekday, mtype = day.find(
+                    "tr/th[@class='swbs_speiseplan_head']"
+                ).text_content().split(u"\u2013")
                 
-                kind_meal = row.find(
-                    "td[@class='swbs_speiseplan_kind_meal']"
-                ).text_content().strip()
-
-                if kind_meal == "":
-                    # skip rows with symbols
+                if mtype.strip() == "Abendmensa":
+                    # skip Abendmensa
                     continue
-                d["kind_meal"] = kind_meal
 
-                detail = row.find(
-                    "td[@class='swbs_speiseplan_other']"
-                ).text_content().strip()
-                if detail != "":
-                    d["meal_detail"] = detail
-                
-                d["price_s"] = row.find(
-                    "td[@class='swbs_speiseplan_price_s']"
-                ).text_content().strip()
+                #get date
+                dt = datetime.datetime.strptime(
+                    weekday.strip().encode("latin1"), 
+                    "%A, %d. %B %Y"
+                ).strftime("%Y%m%d")
+                if dt not in days:
+                    days[dt] = []
 
-                d["price_e"] = row.find(
-                    "td[@class='swbs_speiseplan_price_e']"
-                ).text_content().strip()
-                
-                days[dt].append(d)
+                for row in day.findall("tr")[1:]:
+                    d = {}
+                    d["mensa"] = mensa_name
+                    
+                    kind_meal = row.find(
+                        "td[@class='swbs_speiseplan_kind_meal']"
+                    ).text_content().strip()
+                    if kind_meal == "":
+                        # skip rows with symbols
+                        continue
+                    d["kind_meal"] = kind_meal
+
+                    detail = row.find(
+                        "td[@class='swbs_speiseplan_other']"
+                    ).text_content().strip()
+                    if detail != "":
+                        d["meal_detail"] = detail
+                    print d
+                    d["price_s"] = row.find(
+                        "td[@class='swbs_speiseplan_price_s']"
+                    ).text_content().strip()
+                    
+                    d["price_e"] = row.find(
+                        "td[@class='swbs_speiseplan_price_e']"
+                    ).text_content().strip()
+                    
+                    days[dt].append(d)
+
         return days
 
 
@@ -151,10 +157,14 @@ class Mensa(Plugin):
         tmp = "--- Der Chef de Cuisine empfiehlt ---\n"
         # save category to prevent duplicate printing
         lastkind = None
+        last_mensa = None
         for item in self.days[today]:
-            if lastkind!=item["kind_meal"]:
+            print "=>", item
+            if last_mensa != item["mensa"]:
+                last_mensa = item["mensa"]
+            if lastkind != item["kind_meal"]:
                 # \x02 = bold, \x0F = standard
-                tmp += "\x02%s\x0F\n" % item["kind_meal"]
+                tmp += "\x02%s\x0F [%s]\n" % (item["kind_meal"], last_mensa)
             if item["meal_detail"]:
                 tmp += "    %s" % item["meal_detail"]
             if item["price_s"]:
